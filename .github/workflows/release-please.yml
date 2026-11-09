@@ -1,0 +1,58 @@
+# Release Please - Automated versioning and releases
+#
+# How it works:
+# 1. Every push to main with conventional commits (feat:, fix:, etc.)
+#    updates a "Release PR" that tracks all unreleased changes
+# 2. When you merge the Release PR, it:
+#    - Updates version in pyproject.toml/setup.py
+#    - Updates CHANGELOG.md
+#    - Creates a GitHub Release with tag (v0.9.3, etc.)
+#
+# target-branch is pinned to main on purpose: the GitHub default branch is
+# develop, and release-please-action otherwise opens the Release PR against
+# develop. Merging that PR never tags, because this workflow only runs on main.
+#
+# After a release, the docs-dispatch job asks automem-website to document it
+# (docs on automem.ai follow published releases, not every push to main).
+#
+# Commit message format:
+#   feat: add new feature          → minor version bump (0.9.0 → 0.10.0)
+#   fix: fix a bug                 → patch version bump (0.9.0 → 0.9.1)
+#   feat!: breaking change         → major version bump (0.9.0 → 1.0.0)
+#   chore: update deps             → no version bump (goes in next release)
+#   docs: update readme            → no version bump
+#
+# See: https://github.com/googleapis/release-please
+
+name: Release Please
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          release-type: python
+          target-branch: main
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+
+  docs-dispatch:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    uses: ./.github/workflows/docs-dispatch.yml
+    with:
+      release_tag: ${{ needs.release-please.outputs.tag_name }}
+    secrets: inherit # pragma: allowlist secret

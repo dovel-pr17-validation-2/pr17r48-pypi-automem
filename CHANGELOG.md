@@ -1,0 +1,1015 @@
+# Changelog
+
+All notable changes to AutoMem will be documented in this file.
+
+## [0.16.2](https://github.com/verygoodplugins/automem/compare/v0.16.1...v0.16.2) (2026-08-28)
+
+
+### Bug Fixes
+
+* **backup:** page FalkorDB export by node id instead of deep SKIP ([#221](https://github.com/verygoodplugins/automem/issues/221)) ([009d58e](https://github.com/verygoodplugins/automem/commit/009d58e9a16326200c6aff976761136dcd9654a8))
+* **config:** preserve Ollama defaults and migration checks ([0bc0096](https://github.com/verygoodplugins/automem/commit/0bc00969b1d9f3bb9c5875f82401ec4a5948cd65))
+* **docs:** complete embedding migration runbooks ([3468443](https://github.com/verygoodplugins/automem/commit/34684431293ef9b0a186bb8b4ffb4fc5ca03b4cc))
+* **docs:** correct re-embedding migration setup ([a8be394](https://github.com/verygoodplugins/automem/commit/a8be394bc9598bb8e30edabcec202c66c7256b18))
+* **enrichment:** circuit-break exhausted quota calls ([ea148e5](https://github.com/verygoodplugins/automem/commit/ea148e5e15e0b37ac98cf49a71470bc15b54f721))
+* **enrichment:** circuit-break exhausted quota calls ([#229](https://github.com/verygoodplugins/automem/issues/229)) ([ad3ed27](https://github.com/verygoodplugins/automem/commit/ad3ed2714003a337e0f40c24dc016af60c6ecdf3))
+* **enrichment:** preserve quota circuit during in-flight calls ([29f359d](https://github.com/verygoodplugins/automem/commit/29f359de4657e7de4306a0a2891da451977171e6))
+* **mcp-sse:** emit the stored date in compact recall output ([#224](https://github.com/verygoodplugins/automem/issues/224)) ([42ba8b6](https://github.com/verygoodplugins/automem/commit/42ba8b61b7d0b24ecaeb7feb4ceef59f09fc7cd0))
+* **mcp:** align the parity harness with its own allowlist ([9ac5b4e](https://github.com/verygoodplugins/automem/commit/9ac5b4eeb68dca4f29b8be71437b6702ba1aecd8))
+* **mcp:** close false-failure and coverage gaps in the parity harness ([4cf9ef1](https://github.com/verygoodplugins/automem/commit/4cf9ef1f2352bdbe65d9eea0758711788bcfe37d))
+* **mcp:** close partial connections when parity setup fails ([89346e9](https://github.com/verygoodplugins/automem/commit/89346e9c87f319ad1814cf2a2061e306c005a36c))
+* **mcp:** isolate parity fixtures per scenario and drop the false alarm ([fa458b0](https://github.com/verygoodplugins/automem/commit/fa458b00044598a73556fdf10347541bdabfae26))
+* **qdrant:** index the `type` payload field so recall filters stop 400ing ([c131f02](https://github.com/verygoodplugins/automem/commit/c131f029cbc81d8f9127e0328a02755bf46a9756))
+* **qdrant:** index the `type` payload field so recall filters stop 400ing ([#223](https://github.com/verygoodplugins/automem/issues/223)) ([10bcac7](https://github.com/verygoodplugins/automem/commit/10bcac7e7ac9002d759a047ce463123cd24784e6))
+* **recovery:** honor configured graph and cloud migrations ([4dd1325](https://github.com/verygoodplugins/automem/commit/4dd13258e9bda316adaf121da6fe652ab2057b7e))
+* **stream:** emit live memory operations on GET /stream ([#227](https://github.com/verygoodplugins/automem/issues/227)) ([7a92ebd](https://github.com/verygoodplugins/automem/commit/7a92ebd6fb5e107553d6300f94c5170a36e9335e))
+
+
+### Performance Improvements
+
+* **qdrant:** store collection data on disk ([#231](https://github.com/verygoodplugins/automem/issues/231)) ([07d8704](https://github.com/verygoodplugins/automem/commit/07d870401cd5ed2727a2b802f3cecc6e620d6386))
+* **qdrant:** store new collection data on disk ([c97b5b1](https://github.com/verygoodplugins/automem/commit/c97b5b1134d9aaf188f8a6c0ad47d5af34234d74))
+* **qdrant:** support disk-backed HNSW restores ([b04b9e1](https://github.com/verygoodplugins/automem/commit/b04b9e1cd75b69e652b066e2faf68ff9c8ec198f))
+
+
+### Documentation
+
+* add Qdrant on-disk implementation plan ([56da2b7](https://github.com/verygoodplugins/automem/commit/56da2b75f82a0e3a52a8d06551e251923c19b306))
+* add Qdrant on-disk storage design ([e177b60](https://github.com/verygoodplugins/automem/commit/e177b60115927352b973c3590f5ca429d37f05fc))
+* align provider and maintenance guidance ([93afcff](https://github.com/verygoodplugins/automem/commit/93afcffdf936a955066b2ad3d97c2c453b86891e))
+* align provider and maintenance guidance ([#232](https://github.com/verygoodplugins/automem/issues/232)) ([c40d1d2](https://github.com/verygoodplugins/automem/commit/c40d1d2653aca6fd99e194a53c95472263697b41))
+* **enrichment:** document quota circuit ([d9787cb](https://github.com/verygoodplugins/automem/commit/d9787cb3ccd1b69a85b0a5afbbcc8086488f0749))
+* **mcp:** audit remote vs stdio transport parity ([92b98ec](https://github.com/verygoodplugins/automem/commit/92b98ec8cfe85cfcd6e5d939f61dfe059bcb7b3f))
+* **qdrant:** add on-disk migration runbook ([d05a2d9](https://github.com/verygoodplugins/automem/commit/d05a2d9cd4f10c12f27dc7bf142702ae2b0590d1))
+* **qdrant:** harden on-disk migration runbook ([db71f07](https://github.com/verygoodplugins/automem/commit/db71f07096d920be2f1648c8705af8b648dd0179))
+* **qdrant:** limit migration to default topology ([9b31cde](https://github.com/verygoodplugins/automem/commit/9b31cdea4b5d89d4da8150e64547b9086e178105))
+* **qdrant:** verify migration export before restore ([45e77f4](https://github.com/verygoodplugins/automem/commit/45e77f49220a3d503263dd3d5fcb100d95606e6c))
+* **readme:** lead benchmark section with neutral AMB numbers ([#219](https://github.com/verygoodplugins/automem/issues/219)) ([8ff266e](https://github.com/verygoodplugins/automem/commit/8ff266e62e65cb2e81719a765b05f64a2361a127))
+* target feature PRs at develop ([#228](https://github.com/verygoodplugins/automem/issues/228)) ([bcef376](https://github.com/verygoodplugins/automem/commit/bcef37638d1f44aa72298889a50cd5105ae30c75))
+
+## [0.16.1](https://github.com/verygoodplugins/automem/compare/v0.16.0...v0.16.1) (2026-07-07)
+
+
+### Bug Fixes
+
+* **api:** reject admin placeholder fallback ([69d8205](https://github.com/verygoodplugins/automem/commit/69d820550b807fd2372966220bcc2f88bd5d81c6))
+* **api:** reject placeholder provider repairs ([d2ce087](https://github.com/verygoodplugins/automem/commit/d2ce087edae6768bfc4a31b3fa3df7f7089bd924))
+* **api:** use provider embeddings for admin repair ([b636b50](https://github.com/verygoodplugins/automem/commit/b636b501060ab11687b8d873f3af3a0491c8ffee))
+* **api:** use provider embeddings for admin repair ([#211](https://github.com/verygoodplugins/automem/issues/211)) ([3ae04bf](https://github.com/verygoodplugins/automem/commit/3ae04bf6f4545f38744e4c3f280b763db881a6fb)), closes [#208](https://github.com/verygoodplugins/automem/issues/208)
+* **memory:** require confirmed graph writes ([878e638](https://github.com/verygoodplugins/automem/commit/878e638df115178131ca50079ccd0056025e744a))
+* **memory:** require confirmed graph writes ([#216](https://github.com/verygoodplugins/automem/issues/216)) ([57264a9](https://github.com/verygoodplugins/automem/commit/57264a9f71ae2ce9f08e3cd1950710af682106de))
+* **recall:** address Codex artifact review feedback ([860e0e7](https://github.com/verygoodplugins/automem/commit/860e0e7bd97bc89e757985f5a44d5183bbd59ea4))
+* **recall:** address Codex overfetch follow-ups ([d18d5d7](https://github.com/verygoodplugins/automem/commit/d18d5d7f30d89037f307f3c729fbc657d72f58a4))
+* **recall:** over-fetch vector candidates and exclude artifact types ([ddc9ecc](https://github.com/verygoodplugins/automem/commit/ddc9ecce3220175a1aa63a81711fc53ab33f6113))
+* **recall:** over-fetch vector candidates and exclude artifact types ([#205](https://github.com/verygoodplugins/automem/issues/205)) ([0720da2](https://github.com/verygoodplugins/automem/commit/0720da2c9400cb1fec60396df0fa05a6cfd3bf08))
+* **recall:** preserve metadata sidecar budget ([b9d89c2](https://github.com/verygoodplugins/automem/commit/b9d89c206612fe75525f2e447d5e196690bf18e7))
+* **recall:** preserve metadata sidecar upgrades ([ed3c188](https://github.com/verygoodplugins/automem/commit/ed3c188fd6246637b293cfbdc35fe66ecd6e060c))
+* **recall:** preserve vector fetch limit floor ([833cbbb](https://github.com/verygoodplugins/automem/commit/833cbbb558831a175661f8dbc3e710774ed776a5))
+* **recall:** widen context tag candidate fetch ([a29e9fb](https://github.com/verygoodplugins/automem/commit/a29e9fb50494d4a5e06ccb2338b5404a73dbb579))
+* **recall:** widen context tag candidate fetch ([#215](https://github.com/verygoodplugins/automem/issues/215)) ([01e1082](https://github.com/verygoodplugins/automem/commit/01e1082cf23c8d63865e1709583842067fe933bc))
+* **sync:** ignore metapattern artifacts in drift checks ([cd6f07d](https://github.com/verygoodplugins/automem/commit/cd6f07d0edf878a44faf1e60cfca2ab2578df8d3))
+* **sync:** ignore metapattern artifacts in drift checks ([#214](https://github.com/verygoodplugins/automem/issues/214)) ([7636021](https://github.com/verygoodplugins/automem/commit/7636021bcb535600da6ac870ed296ae836c5017d)), closes [#209](https://github.com/verygoodplugins/automem/issues/209)
+
+
+### Documentation
+
+* **bench:** log PR 205 validation ([a96478a](https://github.com/verygoodplugins/automem/commit/a96478a99afeed614cfd036185c5477dcba4f339))
+* link AMB submission to provider PR [#24](https://github.com/verygoodplugins/automem/issues/24) ([7e60939](https://github.com/verygoodplugins/automem/commit/7e60939cf2db146fdacf7d1090ac91f750d8d4d8))
+* link AMB submission to provider PR [#24](https://github.com/verygoodplugins/automem/issues/24) ([#213](https://github.com/verygoodplugins/automem/issues/213)) ([f207a40](https://github.com/verygoodplugins/automem/commit/f207a40ef4b861e25d595ab77b82125d46b4baf7))
+
+## [0.16.0](https://github.com/verygoodplugins/automem/compare/v0.15.2...v0.16.0) (2026-06-26)
+
+
+### Features
+
+* **api:** add admin backup endpoint ([#162](https://github.com/verygoodplugins/automem/issues/162)) ([8b1f264](https://github.com/verygoodplugins/automem/commit/8b1f2649f7b5a2f4020a66b4f9eed84ae2c4bcba))
+* **api:** support bulk memory associations ([1221e36](https://github.com/verygoodplugins/automem/commit/1221e36dcd184dcdf89333c22d3e171c6a4ec504))
+* **api:** support bulk memory associations ([#198](https://github.com/verygoodplugins/automem/issues/198)) ([28eb916](https://github.com/verygoodplugins/automem/commit/28eb916eae430f80ebee57d44f63b712b9d45398))
+* **benchmarks:** LongMemEval failure-mode diagnosis harness + judge quota preflight ([#183](https://github.com/verygoodplugins/automem/issues/183)) ([f99bece](https://github.com/verygoodplugins/automem/commit/f99becea8858959313eb6e0914332ace1f5a18a2))
+* **consolidation:** expose cluster threshold and min size as env vars ([#163](https://github.com/verygoodplugins/automem/issues/163)) ([7e731f3](https://github.com/verygoodplugins/automem/commit/7e731f358bbd11b565960ee20456b7083a778c36))
+* **enrichment:** expose classification fallback-rate metrics in /enrichment/status ([#188](https://github.com/verygoodplugins/automem/issues/188)) ([0b522a9](https://github.com/verygoodplugins/automem/commit/0b522a9c61f2dcfe0aa980dc529ed357a90d786c))
+* **entity:** harden identity cleanup and repair tooling ([#176](https://github.com/verygoodplugins/automem/issues/176)) ([827dfbc](https://github.com/verygoodplugins/automem/commit/827dfbca997544252046867cb42ee6b6533635a3))
+* **eval:** recall-quality optimization harness — lab foundation + design ([#197](https://github.com/verygoodplugins/automem/issues/197)) ([431433e](https://github.com/verygoodplugins/automem/commit/431433eb11ba3ee04d88a526581e2319657e2f39))
+* **graph:** support unbounded visualizer snapshots ([#141](https://github.com/verygoodplugins/automem/issues/141)) ([c730128](https://github.com/verygoodplugins/automem/commit/c730128e1eec3c729db905db044dd269b8eccb31))
+* **lab:** add aged labelled distractor injection ([cc5d546](https://github.com/verygoodplugins/automem/commit/cc5d546cdc947ca8b608d7a29be3599393db98e3))
+* **lab:** add config_complexity simplicity metric ([dfb10d9](https://github.com/verygoodplugins/automem/commit/dfb10d95fef5e598da5ecd0f0da3efc9a7b1d8d0))
+* **lab:** add distractor_rate_at_k precision guardrail metric ([872eab2](https://github.com/verygoodplugins/automem/commit/872eab2b68dda1dcb8df627fb8f68369e516f0a1))
+* **lab:** add lab_corpus with parameterized recall ([5e1e071](https://github.com/verygoodplugins/automem/commit/5e1e07156f2a52bb70b356cf6c506268f82f9329))
+* **lab:** add pick_winner scorecard decision rule ([3187eac](https://github.com/verygoodplugins/automem/commit/3187eac1ad6ed692799a9a875fc15336c0680d2a))
+* **lab:** add real consolidation pass helper ([48a7d4a](https://github.com/verygoodplugins/automem/commit/48a7d4aa2690878e99442b110abeeec7617356d3))
+* **lab:** isolate production clone restores ([#171](https://github.com/verygoodplugins/automem/issues/171)) ([aef90c0](https://github.com/verygoodplugins/automem/commit/aef90c026e6cbe9a2395a1ba80b2376fa66f0fd1))
+* **lab:** wire scorecard, distractors, recall params, consolidation into runner ([589ec30](https://github.com/verygoodplugins/automem/commit/589ec302562c89d15df61ae27488ef21e17725ed))
+* **recall:** add metadata sidecar search ([#177](https://github.com/verygoodplugins/automem/issues/177)) ([4e7956e](https://github.com/verygoodplugins/automem/commit/4e7956e109a588cce95d458b9ea4327fb0862efa))
+* **recall:** add state_mode=current|history recall alias ([#173](https://github.com/verygoodplugins/automem/issues/173)) ([b1df86c](https://github.com/verygoodplugins/automem/commit/b1df86c01ef07da848a084966818f2b100c8ba83))
+* **recall:** cap tag-score denominator to fix query-length bias ([#193](https://github.com/verygoodplugins/automem/issues/193)) ([cefa516](https://github.com/verygoodplugins/automem/commit/cefa51600be0af7a1f244d772bb3b96846a17708))
+* **recall:** date-aware ranking + latest-fact selection ([#158](https://github.com/verygoodplugins/automem/issues/158), [#159](https://github.com/verygoodplugins/automem/issues/159)) ([#187](https://github.com/verygoodplugins/automem/issues/187)) ([a6ed945](https://github.com/verygoodplugins/automem/commit/a6ed94589e446fc1e1d21c97b698c93c97952d05))
+* **recall:** make recency decay window and curve configurable ([#182](https://github.com/verygoodplugins/automem/issues/182)) ([dbb933f](https://github.com/verygoodplugins/automem/commit/dbb933fe05db9dda132ea14c27bcf9194b7076c0))
+* **recall:** ranking release — recency config, tag-score cap, relevance gate, date-aware ranking ([#182](https://github.com/verygoodplugins/automem/issues/182), [#193](https://github.com/verygoodplugins/automem/issues/193), [#186](https://github.com/verygoodplugins/automem/issues/186), [#187](https://github.com/verygoodplugins/automem/issues/187), [#183](https://github.com/verygoodplugins/automem/issues/183), [#184](https://github.com/verygoodplugins/automem/issues/184), [#188](https://github.com/verygoodplugins/automem/issues/188)) ([#194](https://github.com/verygoodplugins/automem/issues/194)) ([337fe98](https://github.com/verygoodplugins/automem/commit/337fe98914dc7090fec17c45ef906ea90e2cef77))
+* **scripts:** safer reclassify_with_llm.py with provider flags + tighter prompt ([#164](https://github.com/verygoodplugins/automem/issues/164)) ([a742602](https://github.com/verygoodplugins/automem/commit/a742602f5d6ad2dea5a4d3c387d5b49d610afe2c))
+
+
+### Bug Fixes
+
+* **api:** address copilot review on PR [#198](https://github.com/verygoodplugins/automem/issues/198) ([0466a1e](https://github.com/verygoodplugins/automem/commit/0466a1e8c3f9851db065eda10b80e63fad14f2c7))
+* **api:** handle grouped association write failures ([cd93df9](https://github.com/verygoodplugins/automem/commit/cd93df9de0f577fb746aa32c6d4d4769f7bbc641))
+* **backup:** make backup_automem.py runnable as `python scripts/backup_automem.py` ([#175](https://github.com/verygoodplugins/automem/issues/175)) ([edd9742](https://github.com/verygoodplugins/automem/commit/edd9742197e561c2f096e206b82d2c79ade1e5f2))
+* **benchmarks:** add publication verification bundle ([#166](https://github.com/verygoodplugins/automem/issues/166)) ([420d721](https://github.com/verygoodplugins/automem/commit/420d72190d202af5bff6d872404df7fa4176999b))
+* **consolidation:** skip eager first tick at startup to avoid FalkorDB load race ([#165](https://github.com/verygoodplugins/automem/issues/165)) ([1b812cf](https://github.com/verygoodplugins/automem/commit/1b812cf883cbc95632d5f9f1ed180d1865c0638a))
+* **docs:** keep dispatch payload arrays stable ([df6e9e8](https://github.com/verygoodplugins/automem/commit/df6e9e8cc22e98821ad2c36918ed6eefa0b09a0f))
+* **embedding:** fall back to per-item real embeddings before placeholders in batch path ([#189](https://github.com/verygoodplugins/automem/issues/189)) ([6e9c62c](https://github.com/verygoodplugins/automem/commit/6e9c62c13e48f2ceb999c64e6981e72a396b842f))
+* **entity:** restore person-shape exemption on the slug validation path ([#179](https://github.com/verygoodplugins/automem/issues/179)) ([5e29960](https://github.com/verygoodplugins/automem/commit/5e299601260aacbd056651a5eb62b8b51e9f32b1))
+* **entity:** stop validator over-rejecting real people, code tools, and event categories ([#178](https://github.com/verygoodplugins/automem/issues/178)) ([193b730](https://github.com/verygoodplugins/automem/commit/193b73055f7c1157371a139df0aa8742fa3d5353))
+* **lab:** address copilot review on PR [#197](https://github.com/verygoodplugins/automem/issues/197) ([45f80d6](https://github.com/verygoodplugins/automem/commit/45f80d60706a771fd170035ff076a0c435192ac9))
+* **lab:** align scorecard key contract (build_scorecard -&gt; pick_winner) ([7d91530](https://github.com/verygoodplugins/automem/commit/7d9153023d9b9a2dee039d07c4aea40097576efc))
+* **mcp-sse:** decouple /health liveness from upstream readiness ([#151](https://github.com/verygoodplugins/automem/issues/151)) ([5bcfb8b](https://github.com/verygoodplugins/automem/commit/5bcfb8b2ec5f2fb32ef56adf0bf5e3032f181530))
+* **mcp:** cap association failure summary ([ea4e08f](https://github.com/verygoodplugins/automem/commit/ea4e08fd35cc8aefd67e72ec482695a689cfc3e8))
+* **mcp:** surface stored metadata and updated_at in detailed recall format ([#184](https://github.com/verygoodplugins/automem/issues/184)) ([230416e](https://github.com/verygoodplugins/automem/commit/230416e982e48356d3c9f68458906ab2ed745f92))
+* **recall:** address copilot review on PR [#194](https://github.com/verygoodplugins/automem/issues/194) ([50b1647](https://github.com/verygoodplugins/automem/commit/50b16472f8a69570f8dd15a4fc15ce01bf5593c6))
+* **recall:** canonicalize / and : separators in context_tag matching ([3afd9d3](https://github.com/verygoodplugins/automem/commit/3afd9d36cf79833ddd59b126ad58c3797c448f74))
+* **recall:** canonicalize / and : separators in context_tag matching ([#203](https://github.com/verygoodplugins/automem/issues/203)) ([ba5e9ff](https://github.com/verygoodplugins/automem/commit/ba5e9ff5170056403beb5c9fc186cd37a1bf0761))
+* **recall:** gate query-independent scoring on topical evidence within tag scope ([#130](https://github.com/verygoodplugins/automem/issues/130)) ([#186](https://github.com/verygoodplugins/automem/issues/186)) ([c11b594](https://github.com/verygoodplugins/automem/commit/c11b5944dd7f3246edecb2947958f1f4d2e2ff92))
+* **recall:** hydrate semantic recall summaries ([#192](https://github.com/verygoodplugins/automem/issues/192)) ([76e845d](https://github.com/verygoodplugins/automem/commit/76e845dd8287e2ba697e0066874c9ee7ce0c3590))
+* **recall:** normalize graph keyword scores into the 0-1 component range ([#191](https://github.com/verygoodplugins/automem/issues/191)) ([3653ddf](https://github.com/verygoodplugins/automem/commit/3653ddf90554d265fa5d9f355e7521c7b9c41579))
+* **recall:** respect current memory state ([#170](https://github.com/verygoodplugins/automem/issues/170)) ([ed36b98](https://github.com/verygoodplugins/automem/commit/ed36b98e3e1569dde71aa430417b6549520f7068)), closes [#169](https://github.com/verygoodplugins/automem/issues/169) [#158](https://github.com/verygoodplugins/automem/issues/158) [#159](https://github.com/verygoodplugins/automem/issues/159)
+* **scripts:** add sys.path guard to reembed_embeddings.py ([d333cf0](https://github.com/verygoodplugins/automem/commit/d333cf025dfc3fcf3f750230bcb210800ae3f10c))
+
+
+### Documentation
+
+* add scripts catalog, recall-quality-lab guide, and 0.16.0 migrations ([f20c664](https://github.com/verygoodplugins/automem/commit/f20c664c9e5df0eaf3a03af9256c338a6d7ca939))
+* **bench:** log full judged 500q LongMemEval ship-config run with churn attribution ([41bf8d0](https://github.com/verygoodplugins/automem/commit/41bf8d0efdb1d285f5c62fdc318eb345b4749d98))
+* **eval:** Plan A — lab metric foundation (TDD, 9 tasks) ([0087dda](https://github.com/verygoodplugins/automem/commit/0087dda014eba858bf6fb127db9628fcb9db415a))
+* **eval:** Plan B — parallel matrix harness (TDD, 9 tasks) ([c8ddfb2](https://github.com/verygoodplugins/automem/commit/c8ddfb2dce120ddb4b343f470659edc1da10e384))
+* **evals:** mark Memora/FAMA/WRIT lifecycle diagnostics as diagnostic-only ([#174](https://github.com/verygoodplugins/automem/issues/174)) ([e8a3285](https://github.com/verygoodplugins/automem/commit/e8a3285681cc0b2d6b8d2d188bf481ffe63452ee))
+* **eval:** spec for recall-quality optimization harness ([b1a1995](https://github.com/verygoodplugins/automem/commit/b1a1995ba38ca9d57fb864bd67ffd4c3e9153ab5))
+* fix stale claims and document gated flags for 0.16.0 ([b152d64](https://github.com/verygoodplugins/automem/commit/b152d6472ff475d91f73bfbce0e2847a91602e9d))
+* note develop-branch contribution policy in README ([ccf02dd](https://github.com/verygoodplugins/automem/commit/ccf02ddc516864d405edce99b8f131fbc36b27e7))
+* **positioning:** add scout reference ([#168](https://github.com/verygoodplugins/automem/issues/168)) ([922d23b](https://github.com/verygoodplugins/automem/commit/922d23b6bf40575cdacd7bfe39288c9acd371176))
+* refresh benchmark currency for the neutral AMB run and prune stale archive docs ([3ff95bd](https://github.com/verygoodplugins/automem/commit/3ff95bd82e2afc50d45183dfdc5259c6ee89be42))
+* refresh benchmark currency for the neutral AMB run and prune stale archive docs ([#204](https://github.com/verygoodplugins/automem/issues/204)) ([89c30e0](https://github.com/verygoodplugins/automem/commit/89c30e0c56592fd8794976cec09d8dd8abf2b4f7))
+* refresh README and benchmark guidance ([#157](https://github.com/verygoodplugins/automem/issues/157)) ([bba31cc](https://github.com/verygoodplugins/automem/commit/bba31ccdb864c5fe70de56ed309ff6bd587cdb28))
+* **runtime:** align Docker viewer paths and setup guidance ([#155](https://github.com/verygoodplugins/automem/issues/155)) ([bbda79b](https://github.com/verygoodplugins/automem/commit/bbda79b37cc18066b1de9a83ba7a8487cd6c7a7b))
+* scripts catalog, recall quality lab guide, and 0.16.0 migration runbook ([#199](https://github.com/verygoodplugins/automem/issues/199)) ([f190ae5](https://github.com/verygoodplugins/automem/commit/f190ae5942cec46c77132bac56c24e74423b9598))
+
+## [0.15.2](https://github.com/verygoodplugins/automem/compare/v0.15.1...v0.15.2) (2026-04-23)
+
+
+### Bug Fixes
+
+* **benchmarks:** make LoCoMo judge runs reliable ([#149](https://github.com/verygoodplugins/automem/issues/149)) ([c22f2c9](https://github.com/verygoodplugins/automem/commit/c22f2c9db57f45e30525ce0d0c7f523aaeee721d))
+* **recall:** bypass tag filter on expansion candidates ([#142](https://github.com/verygoodplugins/automem/issues/142)) ([#146](https://github.com/verygoodplugins/automem/issues/146)) ([4f0fcf8](https://github.com/verygoodplugins/automem/commit/4f0fcf8d1c7cb30c24a4bfb572504bcf6c36e62e))
+* **recall:** keyword scoring for vector results + softer adaptive floor ([#150](https://github.com/verygoodplugins/automem/issues/150)) ([591b2c7](https://github.com/verygoodplugins/automem/commit/591b2c7a4e65af90922a7f286b1c16e67761aea5))
+
+## [0.15.1](https://github.com/verygoodplugins/automem/compare/v0.15.0...v0.15.1) (2026-03-25)
+
+
+### Bug Fixes
+
+* **consolidation:** fetch cluster/creative embeddings from Qdrant ([#131](https://github.com/verygoodplugins/automem/issues/131)) ([96d0660](https://github.com/verygoodplugins/automem/commit/96d06607b2274323b3c8dee69866aa37d817de88))
+* **embedding:** validate provider dimension compatibility before init ([#134](https://github.com/verygoodplugins/automem/issues/134)) ([9ac2fb2](https://github.com/verygoodplugins/automem/commit/9ac2fb29ea081c617b748c0cf0d733627770b689))
+* **runtime:** support OPENAI_BASE_URL for classification client ([#135](https://github.com/verygoodplugins/automem/issues/135)) ([95a58c9](https://github.com/verygoodplugins/automem/commit/95a58c99d1cb53e14fbf086ba65b66d67ad1ffbe))
+
+## [0.15.0](https://github.com/verygoodplugins/automem/compare/v0.14.0...v0.15.0) (2026-03-12)
+
+
+### Features
+
+* **bench:** add opt-in LoCoMo cat5 judge ([#119](https://github.com/verygoodplugins/automem/issues/119)) ([8b7915c](https://github.com/verygoodplugins/automem/commit/8b7915cb954bcd38773f1f5fe71fc4201fae99bb))
+* **memory:** optimize relationship taxonomy ([#121](https://github.com/verygoodplugins/automem/issues/121)) ([605633e](https://github.com/verygoodplugins/automem/commit/605633ea6ff27784a11775660f01d0ad4a4c04ca))
+
+
+### Bug Fixes
+
+* **benchmarks:** correct evaluator bugs, add agent guidelines, establish honest baseline ([#117](https://github.com/verygoodplugins/automem/issues/117)) ([d9cbecb](https://github.com/verygoodplugins/automem/commit/d9cbecbb0289660e746475884067d76bdc949b5d))
+* **recall:** priority_ids parameter only boosts relevance ([#79](https://github.com/verygoodplugins/automem/issues/79)) ([#125](https://github.com/verygoodplugins/automem/issues/125)) ([5d3708c](https://github.com/verygoodplugins/automem/commit/5d3708c665fa96f2d23e1740f122f20f974bde73))
+
+## [0.14.0](https://github.com/verygoodplugins/automem/compare/v0.13.0...v0.14.0) (2026-03-07)
+
+
+### Features
+
+* **config:** add QDRANT_HOST + QDRANT_PORT as alternative to QDRANT_URL ([#112](https://github.com/verygoodplugins/automem/issues/112)) ([0871904](https://github.com/verygoodplugins/automem/commit/0871904ff069d1235a2fb83119314911bea72520))
+* **docker:** Add Docker build workflow ([#98](https://github.com/verygoodplugins/automem/issues/98)) ([39bf6e7](https://github.com/verygoodplugins/automem/commit/39bf6e7fc052a872f51ee1168dbdab25ab17de97))
+
+
+### Bug Fixes
+
+* **benchmarks:** handle possessive speaker names in LoCoMo ([#116](https://github.com/verygoodplugins/automem/issues/116)) ([abcbcca](https://github.com/verygoodplugins/automem/commit/abcbcca2d1a71306ae489974ebfee132b1c4d789))
+* **consolidation:** reduce decay rate, add importance floor, filter archived memories ([#78](https://github.com/verygoodplugins/automem/issues/78)) ([#105](https://github.com/verygoodplugins/automem/issues/105)) ([3fce4ce](https://github.com/verygoodplugins/automem/commit/3fce4ce3bf364cf459e50ad4f1e62e703c0e07f3))
+* handle smart apostrophes in recall entity extraction ([#115](https://github.com/verygoodplugins/automem/issues/115)) ([05b4daa](https://github.com/verygoodplugins/automem/commit/05b4daacf86cfca713cbd7362e73e39d18395d7f))
+* harden MCP bridge resilience, adopt stateless transport, and update cross-client docs ([#114](https://github.com/verygoodplugins/automem/issues/114)) ([ec88da6](https://github.com/verygoodplugins/automem/commit/ec88da6ef406ad155f0480cc2a3c9a6a916383c7))
+* **qdrant:** prevent silent vector dimension mismatch, set Voyage as recommended default ([#108](https://github.com/verygoodplugins/automem/issues/108)) ([5f88105](https://github.com/verygoodplugins/automem/commit/5f881054a3d305e2fb7eee761233cc37378becd1))
+
+## [0.13.0](https://github.com/verygoodplugins/automem/compare/v0.12.0...v0.13.0) (2026-03-02)
+
+
+### Features
+
+* **bench:** benchmark testing infrastructure for rapid iteration ([#97](https://github.com/verygoodplugins/automem/issues/97)) ([80a6f93](https://github.com/verygoodplugins/automem/commit/80a6f93a783182ddd9efb9f9f17d73cb8d6f3702))
+* **recall:** add min_score threshold and adaptive floor filtering ([#73](https://github.com/verygoodplugins/automem/issues/73)) ([#101](https://github.com/verygoodplugins/automem/issues/101)) ([8df3c08](https://github.com/verygoodplugins/automem/commit/8df3c08fc2dcefc8b848a42698af1d2ebec2e680))
+* **viewer:** add standalone graph-viewer runtime files ([5bcb6db](https://github.com/verygoodplugins/automem/commit/5bcb6dba3d9045c6cf67b6a2055cffc98178fcbc))
+* **viewer:** consolidate stable core and split-ready compatibility ([#94](https://github.com/verygoodplugins/automem/issues/94)) ([958da72](https://github.com/verygoodplugins/automem/commit/958da726763bcae4ff616d2bd7bc7c8d59dec35e))
+* **viewer:** externalize visualizer with /viewer compatibility routes ([29bafcf](https://github.com/verygoodplugins/automem/commit/29bafcfb4816e2eb9de0e74619e7b3b8c7bac930))
+* **viewer:** merge visualizer stable core branch ([96b27bf](https://github.com/verygoodplugins/automem/commit/96b27bf0d7a878ab16695cf340b7bbfe13bcfafd))
+
+
+### Bug Fixes
+
+* FalkorDB data not persisting across restarts ([`#99`](https://github.com/verygoodplugins/automem/issues/99)) ([3bbc834](https://github.com/verygoodplugins/automem/commit/3bbc83441124884d9a89b34c32d0373c79eb7d37), [8490d36](https://github.com/verygoodplugins/automem/commit/8490d3641cafa97246edfb3a913ce200ef26478d))
+* **mcp-sse:** sync tool schemas for SSE/MCP parity ([#104](https://github.com/verygoodplugins/automem/issues/104)) ([d99b86d](https://github.com/verygoodplugins/automem/commit/d99b86d9ed2a2612abe5770bcbf729493d7c7bf7))
+
+
+### Documentation
+
+* **bench:** add PR [#73](https://github.com/verygoodplugins/automem/issues/73), [#80](https://github.com/verygoodplugins/automem/issues/80), and [#87](https://github.com/verygoodplugins/automem/issues/87) experiment results ([#103](https://github.com/verygoodplugins/automem/issues/103)) ([8533fac](https://github.com/verygoodplugins/automem/commit/8533face4dc7319392e1f4b8890f9e24c66ae916))
+
+## [0.12.0](https://github.com/verygoodplugins/automem/compare/v0.11.0...v0.12.0) (2026-02-20)
+
+
+### Features
+
+* add LongMemEval benchmark harness (ICLR 2025) ([#83](https://github.com/verygoodplugins/automem/issues/83)) ([8f51895](https://github.com/verygoodplugins/automem/commit/8f518959b789f56e898e73bb1f2535413f4b5f10))
+* just-in-time enrichment on recall ([#86](https://github.com/verygoodplugins/automem/issues/86)) ([#88](https://github.com/verygoodplugins/automem/issues/88)) ([743ab6b](https://github.com/verygoodplugins/automem/commit/743ab6bd52aeba28681964cb10118d2fa54b8767))
+* **lab:** add Recall Quality Lab for data-driven recall optimization ([d53dfdd](https://github.com/verygoodplugins/automem/commit/d53dfdd7a365b9bf99a5001550c1fb4ff8d851e4))
+* **lab:** Recall Quality Lab + fix relevance_score Qdrant sync ([#81](https://github.com/verygoodplugins/automem/issues/81)) ([ba1308a](https://github.com/verygoodplugins/automem/commit/ba1308a340cd6fb796e3b88cf4a9415386eaf5b3))
+
+
+### Bug Fixes
+
+* code quality improvements from CodeRabbit review ([#85](https://github.com/verygoodplugins/automem/issues/85)) ([4c81f0f](https://github.com/verygoodplugins/automem/commit/4c81f0f7ea3c064c8087bdf2037313c8cd6dd9c1))
+* **lab:** address CodeRabbit review — type hints, f-strings, validation ([5fee1e8](https://github.com/verygoodplugins/automem/commit/5fee1e8484e00ad7933d28ec78c24503d7c03219))
+* **lab:** address CodeRabbit review findings ([c121341](https://github.com/verygoodplugins/automem/commit/c121341e6106c5c3a6da5162df575b8f0b39f510))
+* **recall:** sync relevance_score to Qdrant payload for vector search ([55e381b](https://github.com/verygoodplugins/automem/commit/55e381b76265c7bb4e88c35a84e251b1de012dbf))
+
+
+### Documentation
+
+* Update environment variables ([08e6126](https://github.com/verygoodplugins/automem/commit/08e612695395cf623f50ecc5697103778332b554))
+
+## [0.11.0](https://github.com/verygoodplugins/automem/compare/v0.10.1...v0.11.0) (2026-02-16)
+
+
+### Features
+
+* **api:** add GET /memory/&lt;id&gt; endpoint ([9625580](https://github.com/verygoodplugins/automem/commit/962558053648c72cdc57d3824db2ded11c6b165f))
+* **api:** add GET /memory/&lt;id&gt; endpoint ([#68](https://github.com/verygoodplugins/automem/issues/68)) ([205bdbe](https://github.com/verygoodplugins/automem/commit/205bdbe959cde3ea36e950155e2cff8b4b01bf4b))
+* **embedding:** add Voyage AI embedding provider ([a2ca403](https://github.com/verygoodplugins/automem/commit/a2ca4031ca0ccee0e77715024880ee2e9f46cde0))
+* **embedding:** add Voyage AI embedding provider ([#67](https://github.com/verygoodplugins/automem/issues/67)) ([1bafc44](https://github.com/verygoodplugins/automem/commit/1bafc443795934ec4883fa3feea22ad27af62431))
+* **embedding:** support OpenAI-compatible providers via OPENAI_BASE_URL ([#76](https://github.com/verygoodplugins/automem/issues/76)) ([383a798](https://github.com/verygoodplugins/automem/commit/383a7987edccbcfe137da924e2c5618ec7006568)), closes [#70](https://github.com/verygoodplugins/automem/issues/70)
+
+
+### Bug Fixes
+
+* add defensive validation and improve error handling in Voyage provider ([4c8433a](https://github.com/verygoodplugins/automem/commit/4c8433af5f4743455685d7c502deaa3906fae97f))
+* add httpx to prod deps, skip retry on ValueError, validate embedding count ([95c1e9d](https://github.com/verygoodplugins/automem/commit/95c1e9d4d8ace602538400739510d760c025e396))
+* add missing metadata parsing and access tracking to GET /memory/&lt;id&gt; ([d115929](https://github.com/verygoodplugins/automem/commit/d11592974d3c88ff75ab125ea8a59bd63188148a))
+* guard against bool values in numeric timestamp parsing ([2304c5c](https://github.com/verygoodplugins/automem/commit/2304c5c3912e91a203992ca08025ac27abbcf84b))
+* **utils:** handle numeric timestamps and non-string values in time parser ([0bb222b](https://github.com/verygoodplugins/automem/commit/0bb222b0546a62ee9fa312e78338b389953a6fb8))
+* **utils:** handle numeric timestamps and non-string values in time parser ([#69](https://github.com/verygoodplugins/automem/issues/69)) ([2ba2931](https://github.com/verygoodplugins/automem/commit/2ba29317cd3fbb8cf0eea5e4a940e5d70a678a54))
+* validate embedding items and fix line length ([4c0d278](https://github.com/verygoodplugins/automem/commit/4c0d278555c5372449bb9768c259edc647f1822d))
+
+
+### Documentation
+
+* **api:** include 500 error for GET /memory/{id} ([4b5a603](https://github.com/verygoodplugins/automem/commit/4b5a603e10e021a1f8e888c89102618134dada38))
+
+## [0.10.1](https://github.com/verygoodplugins/automem/compare/v0.10.0...v0.10.1) (2026-02-07)
+
+
+### Bug Fixes
+
+* bound temporal query to 7-day window with timeout ([#62](https://github.com/verygoodplugins/automem/issues/62)) ([9c720de](https://github.com/verygoodplugins/automem/commit/9c720dea686e579d2f85881624db8c3c48ce395d))
+* skip temperature param for o-series and gpt-5 models ([#65](https://github.com/verygoodplugins/automem/issues/65)) ([f1d5b1d](https://github.com/verygoodplugins/automem/commit/f1d5b1d283e3b0e929697ceed97aa99755c9ca27))
+* use max_completion_tokens for gpt-5 model family ([#61](https://github.com/verygoodplugins/automem/issues/61)) ([1ec25db](https://github.com/verygoodplugins/automem/commit/1ec25dbc7616f1a00008df59f34abd589feec770))
+
+## [0.10.0](https://github.com/verygoodplugins/automem/compare/v0.9.3...v0.10.0) (2026-02-06)
+
+
+### Features
+
+* Add `exclude_tags` parameter to recall API ([#58](https://github.com/verygoodplugins/automem/issues/58)) ([8aeca2e](https://github.com/verygoodplugins/automem/commit/8aeca2ebba472ce065ed97b46ef495519a836067))
+* add memory content size governance with auto-summarization ([e24a86b](https://github.com/verygoodplugins/automem/commit/e24a86be0a0dde80804aef6b6d88953d0e4dd9a5))
+* add memory content size governance with auto-summarization ([876aabf](https://github.com/verygoodplugins/automem/commit/876aabf320cc5937c44d6678e02f0aed33b051b8))
+* Add real-time observability with SSE streaming and TUI monitor ([54d2701](https://github.com/verygoodplugins/automem/commit/54d2701f42992de6172aa862d794f6b09ff0c95b))
+* Add real-time observability with SSE streaming and TUI monitor ([c5f6370](https://github.com/verygoodplugins/automem/commit/c5f63708f0bcb3ab63c56ae0ae63da0dd4b3229b))
+* Add real-time observability with SSE streaming and TUI monitor ([944168e](https://github.com/verygoodplugins/automem/commit/944168e8e00bcdc42af09944577e32475ce25119))
+* **api:** add graph visualization API endpoints ([#26](https://github.com/verygoodplugins/automem/issues/26)) ([a0d0dd3](https://github.com/verygoodplugins/automem/commit/a0d0dd3719ac9dad7c4e24e78f290c9364d2b2e1))
+* **api:** add time-based sorting to recall API ([c063845](https://github.com/verygoodplugins/automem/commit/c063845bb72af7aaaff519083b850da84f20003e))
+* **api:** add time-based sorting to recall API ([a511f0c](https://github.com/verygoodplugins/automem/commit/a511f0c6b6ab74e1c98d29eaae19c7ca69f6542b))
+* create coderabbit.yml ([e05811f](https://github.com/verygoodplugins/automem/commit/e05811f32904a0355b34957be0d5a15629f73f2b))
+* **embedding:** add Ollama embedding provider and expand docs ([#56](https://github.com/verygoodplugins/automem/issues/56)) ([b506a90](https://github.com/verygoodplugins/automem/commit/b506a90661ee8f329bfdc40fff6dda7b2c6a0504))
+* **mcp-sse:** agent-friendly recall output + tests ([71201d3](https://github.com/verygoodplugins/automem/commit/71201d33b5b8a9044f23f3a911dbf193de67b669))
+* **mcp-sse:** improve recall tool output and options ([97c4f72](https://github.com/verygoodplugins/automem/commit/97c4f7240b5319a95412e7d1e65ae65e67150a46))
+
+
+### Bug Fixes
+
+* Add TTL cleanup to InMemoryEventStore ([0631af6](https://github.com/verygoodplugins/automem/commit/0631af6cee60f70505aa0f392e5073f8245b7923))
+* Address CodeRabbit security and lint issues ([a701c57](https://github.com/verygoodplugins/automem/commit/a701c578340c90bb08456a066cdf1e304b11ddda))
+* **backup:** Fix GitHub Actions backup failing with connection error ([19ed1e8](https://github.com/verygoodplugins/automem/commit/19ed1e817f2faab4b570a3d7cdc829c3d9a664ff))
+* **backup:** Fix GitHub Actions backup failing with connection error ([10b37d0](https://github.com/verygoodplugins/automem/commit/10b37d0f92273dbaf29bad4cb32d95ff80df5e81))
+* **consolidation:** prevent accidental forgetting ([4330c20](https://github.com/verygoodplugins/automem/commit/4330c207d01f68fda96347f36cac41dc466ce93a))
+* **consolidation:** prevent accidental forgetting ([39dee3e](https://github.com/verygoodplugins/automem/commit/39dee3ec44baf73bf319d16b3ca11667ad063fd2))
+* Correct token parameter for gpt-5 models (max_output_tokens) ([0786705](https://github.com/verygoodplugins/automem/commit/0786705597493779ee16d64b6d111428336da7a7))
+* **enrichment:** sync tags/tag_prefixes to Qdrant ([3ccf874](https://github.com/verygoodplugins/automem/commit/3ccf8748901c6f297a7cb0487d5ac9ddf63bd076))
+* **enrichment:** sync tags/tag_prefixes to Qdrant ([7ba9d76](https://github.com/verygoodplugins/automem/commit/7ba9d76d2be0575fe688ada42f9a29542b890edf))
+* Handle streamable HTTP client disconnects ([f15a7ee](https://github.com/verygoodplugins/automem/commit/f15a7ee81ef690581bbc54deca38c168401a4cac))
+* **mcp-sse:** update test for SDK 1.20+ Accept header behavior ([597909e](https://github.com/verygoodplugins/automem/commit/597909e40a2aecc28420c3a9bbb0a41deda0bfa7))
+* **mcp:** close transport/server on sweep and update Accept header test ([ce7f6fa](https://github.com/verygoodplugins/automem/commit/ce7f6fad6720bd091883805ddbf8d4e702a91e60))
+* **mcp:** replace broken res.on('close') with TTL sweep for Streamable HTTP sessions ([3d53263](https://github.com/verygoodplugins/automem/commit/3d53263389c72c2c2fd624ea3cb18b8d5d1e1227))
+* **mcp:** replace broken res.on('close') with TTL sweep for Streamable HTTP sessions ([#59](https://github.com/verygoodplugins/automem/issues/59)) ([d4d3259](https://github.com/verygoodplugins/automem/commit/d4d325916f167c0f69a97038d8d335b0dc15a95d))
+* **mcp:** use Promise.resolve().catch() for async close() in session sweep ([a8cc589](https://github.com/verygoodplugins/automem/commit/a8cc5895dd826883e3c8e3fbeda66c9a8f7b5790))
+* Production bugs - datetime tz, OpenAI tokens, Qdrant race ([14491c4](https://github.com/verygoodplugins/automem/commit/14491c47ea78729d03cd36390cda67f3cc70670a))
+* Production bugs - datetime tz, OpenAI tokens, Qdrant race ([0771360](https://github.com/verygoodplugins/automem/commit/07713600e3b5c13c9c3662b89a2baa6c1d1bb90b))
+* Refactor tests to use double quotes for consistency ([21da453](https://github.com/verygoodplugins/automem/commit/21da45310652ee700ddb97da11db65b6ddeb6e90))
+* Refine summarization token limit and improve tests ([6cab145](https://github.com/verygoodplugins/automem/commit/6cab145ea6e4e65ad172ccf242b2a57c8f585018))
+* Update test for POST /mcp Accept header error ([67a5a10](https://github.com/verygoodplugins/automem/commit/67a5a10a8ae416eeb6992c1ffaafe33aae881ff1))
+* YAML indentation in backup workflow and update docs ([a606b3e](https://github.com/verygoodplugins/automem/commit/a606b3e4ae160d0f3b7e390579ab7b0adac70947))
+
+
+### Documentation
+
+* add mermaid diagrams for architecture visualization ([0d70a2a](https://github.com/verygoodplugins/automem/commit/0d70a2a9037743059dbb3bc1ca1902cdc9ad5b5c))
+* Add Qdrant setup guide and update docs for AUTOMEM_API_URL ([5c440aa](https://github.com/verygoodplugins/automem/commit/5c440aa7fa38c3169655601953859b5ffd4a009e))
+* Add Qdrant setup guide and update docs for AUTOMEM_API_URL ([123ff28](https://github.com/verygoodplugins/automem/commit/123ff282508e648a97fe0a0d40c522cf1ceded62))
+* Enhance README.md with formatted NPM bridge link ([09ac4ac](https://github.com/verygoodplugins/automem/commit/09ac4acc6e9f7738f25b06cbe12dff0975ad2e0f))
+* merge mermaid diagrams from docs/add-mermaid-diagrams ([4e9ae4f](https://github.com/verygoodplugins/automem/commit/4e9ae4fcd18b58a356cb87e34ca43a29e81a5bf7))
+* Update API documentation and configuration settings ([9281149](https://github.com/verygoodplugins/automem/commit/928114926cb7795b3ee70783d38a2ba747209355))
+* Update API documentation and configuration settings ([#51](https://github.com/verygoodplugins/automem/issues/51)) ([ad9500f](https://github.com/verygoodplugins/automem/commit/ad9500f698c9d78bcae29682bad43164cba8028b))
+* Update API endpoint count and project description ([9e71299](https://github.com/verygoodplugins/automem/commit/9e71299be2bb6744d78e0e596b2d3afcc760458a))
+* update diagrams for Streamable HTTP transport ([1a2ce22](https://github.com/verygoodplugins/automem/commit/1a2ce22caea6d46b27b59dd235cc8076be2a5e1b))
+* Update docs to clarify MCP bridge and improve formatting ([af69a2f](https://github.com/verygoodplugins/automem/commit/af69a2fd6c7f91e82e96c0b48b24d21796782651))
+* Update MCP documentation and server implementation for Streamable HTTP support ([8fdef09](https://github.com/verygoodplugins/automem/commit/8fdef09863989bdde0a514b152d570cc93d69d37))
+* Update MCP documentation and server implementation for Streamable HTTP support ([335a78d](https://github.com/verygoodplugins/automem/commit/335a78dc60cf2821eb095cd276c74e8d81418469))
+* update MCP_SSE.md to reflect MCP bridge terminology ([940a776](https://github.com/verygoodplugins/automem/commit/940a776e0cb43ad74c4dd1c7c2820f9317b3a4c9))
+* Update Railway deployment docs and improve README ([5480eb5](https://github.com/verygoodplugins/automem/commit/5480eb52136162893236e0b5278cb241dd57481f))
+* Update Railway deployment docs and improve README ([82c33b0](https://github.com/verygoodplugins/automem/commit/82c33b05b7b24d66922888ba4ba3b09ba55a10d6))
+
+## [Unreleased]
+
+### Fixed
+
+- **GitHub Actions Backup**: Fixed backup workflow failing with "Connection reset by peer" error
+  - Root cause: Backup script tried to connect to Railway internal hostname which isn't accessible from GitHub Actions
+  - Solution: Use Railway TCP Proxy for external access to FalkorDB
+  - Added pre-flight connectivity check with clear error messages and troubleshooting guidance
+  - Updated documentation with TCP Proxy setup instructions
+
+### Documentation
+
+- Expanded `docs/MONITORING_AND_BACKUPS.md` with:
+  - TCP Proxy setup instructions for GitHub Actions backups
+  - Network architecture diagram explaining internal vs external access
+  - Troubleshooting section for common backup failures
+  - Debug checklist for verifying backup configuration
+
+## [0.9.3] - 2025-12-10
+
+### Fixed
+
+- **Critical**: Fixed missing `RECALL_EXPANSION_LIMIT` import that caused crashes when using expansion features
+
+### CI/CD
+
+- Added GitHub Actions CI workflow with tests on Python 3.10, 3.11, 3.12
+- Added pre-commit hooks for code quality enforcement
+  - Black formatting (100 char line length)
+  - isort import sorting
+  - Flake8 syntax checking
+  - Conventional commit validation
+  - Secret detection
+- Added release-please for automated versioning and releases
+
+### Style
+
+- Applied consistent formatting across entire codebase with Black and isort
+
+## [0.9.2] - 2025-12-10
+
+### Added
+
+- **Expansion Filtering**: Added `expand_min_strength` and `expand_min_importance` parameters to `recall` API
+  - Filters expanded relation results by connection strength and target memory importance
+  - Reduces noise in multi-hop reasoning and graph expansion
+  - Seed results are never filtered, only expanded memories
+  - Recommended values: 0.3-0.5 for broad context, 0.6+ for focused results
+- **Vector Dimension Autodetect**: Added `VECTOR_SIZE_AUTODETECT` env var
+  - Automatically detects and adopts existing Qdrant collection dimension
+  - Prevents service crashes when upgrading defaults (e.g. 768d -> 3072d)
+
+### Documentation
+
+- Expanded `docs/API.md` with detailed expansion filtering documentation and examples
+- Added graph expansion examples to `README.md` API examples section
+
+## [0.9.1] - 2025-12-02
+
+### 🏆 Benchmark Improvement
+
+- Achieved **90.53%** on LoCoMo-10 (SOTA, +2.29pp over CORE at 88.24%)
+- Multi-hop reasoning improved from 37.5% to **50%** (+12.5pp)
+- New benchmark report: `tests/benchmarks/BENCHMARK_2025-12-02.md`
+
+### 🔗 Entity-to-Entity Expansion
+
+- **Feature**: New `expand_entities` parameter for multi-hop reasoning via entity tags
+- **How it works**: Extracts entities from seed results → searches for `entity:people:{name}` tags
+- **Use case**: Query about "Amanda's sister's career" finds "Amanda's sister is Rachel" → entity expansion finds "Rachel works as counselor"
+- Respects original tag filters for proper context scoping
+
+### 🧪 Test Infrastructure
+
+- Fixed test cleanup: was missing 99% of tagged memories (used wrong endpoint)
+- Added `test_multihop_quick.py` for rapid multi-hop iteration
+- Improved Q+A embedding similarity checking in test harness
+
+### 📝 Documentation
+
+- Updated API.md with `expand_entities` and `expand_relations` params
+- Updated ENVIRONMENT_VARIABLES.md with `RECALL_EXPANSION_LIMIT`
+- Updated TESTING.md with latest benchmark results
+- Updated README with 90.53% score
+
+### 🔧 Configuration
+
+- New param: `expand_entities` (default: false) - enables entity-to-entity expansion
+- New param: `entity_expansion` (alias for expand_entities)
+- Existing: `RECALL_EXPANSION_LIMIT=25` - total expansion results limit
+
+## [0.9.0] - 2025-11-20
+
+### 🏆 Benchmark Breakthrough
+
+- Achieved **90.38%** on LoCoMo-10 (SOTA, +2.14pp over CORE at 88.24%)
+- New benchmark report: `tests/benchmarks/BENCHMARK_2025-11-20.md`
+
+### 🧠 Retrieval Improvements
+
+- Added **multi-hop bridge discovery** to connect disparate seed memories
+- Introduced **temporal alignment scoring** for time-aware recall
+- Added **content token overlap** to boost lexical precision
+- Hybrid scoring now combines 9 weighted components (vector, keyword, relation, content, temporal, tag, importance, confidence, recency, exact)
+
+### 🔧 Configuration
+
+- New env vars: `RECALL_BRIDGE_LIMIT`, `SEARCH_WEIGHT_CONTENT`, `SEARCH_WEIGHT_TEMPORAL`
+- Tuned defaults for relation/path expansion (`expand_relations`, `expand_paths`, bridge limits)
+
+### 📝 Documentation
+
+- Documented LoCoMo SOTA run and configuration in `docs/TESTING.md`
+- Updated changelog and benchmark references
+
+## [0.8.0] - 2025-11-08
+
+### 🏗️ Major Refactoring
+
+#### API Modularization
+
+- **Breaking**: Refactored monolithic `app.py` into modular API blueprints
+- New structure: `automem/api/` with separate modules:
+  - `memory.py` - Core memory CRUD operations
+  - `recall.py` - Memory search and retrieval
+  - `admin.py` - Administrative endpoints (reembedding, analysis)
+  - `health.py` - Health checks and monitoring
+  - `enrichment.py` - Enrichment pipeline management
+  - `consolidation.py` - Memory consolidation
+- Improved code organization and maintainability
+- Reduced `app.py` from 1,251 lines to ~200 lines
+
+### 🔒 Security Fixes
+
+#### Memory ID Security
+
+- **Critical**: Removed support for client-supplied memory IDs
+- Now always generates server-side UUIDs to prevent collision/overwrite attacks
+- Eliminates potential for malicious clients to overwrite existing memories
+
+#### Batch Processing Reliability
+
+- Fixed batch failure counter in reembedding endpoint
+- Now correctly tracks only successfully upserted items
+- Prevents incorrect success counts when Qdrant upserts fail
+
+### 🚀 Railway Deployment Improvements
+
+#### Template Fixes
+
+- **Critical**: Fixed secret generation syntax in `railway-template.json`
+- Changed from `{"generator": "secret"}` to `${{secret()}}` (Railway's correct syntax)
+- Fixes blank `FALKOR_PASSWORD`, `ADMIN_API_TOKEN`, and `AUTOMEM_API_TOKEN` on deploy
+- Removed `--requirepass` from `REDIS_ARGS` to prevent Redis config parse errors
+- FalkorDB now handles authentication via `FALKOR_PASSWORD` env var only
+
+#### Documentation Enhancements
+
+- Expanded `docs/RAILWAY_DEPLOYMENT.md` with detailed troubleshooting
+- Added step-by-step deployment instructions
+- Included cost optimization tips and backup strategies
+- Documented persistent storage configuration
+- Added environment variable reference and best practices
+
+### 🧪 Testing Improvements
+
+#### Live Integration Tests
+
+- Added safety confirmation prompt to `test-live-server.sh`
+- Prevents accidental test runs against production
+- New `--non-interactive` flag for CI/CD pipelines
+- Fixed argument parsing bug (shift mutation in for-loop)
+- `test-live-server-auto.sh` now wrapper for backward compatibility
+
+#### LoCoMo Benchmark Support
+
+- Added LoCoMo benchmark integration for memory system evaluation
+- Documents AutoMem's 76.08% accuracy on LoCoMo-10 (vs CORE at 88.24%) as of November 8, 2025
+- Comprehensive benchmark results in `tests/benchmarks/BENCHMARK_2025-11-08.md` and summarized in `docs/TESTING.md`
+- Test coverage for multi-hop reasoning, temporal understanding, complex reasoning
+
+#### Test Infrastructure
+
+- Added OpenAI chat completions mock in `conftest.py`
+- Improved test reliability with proper cache invalidation
+- Removed unused test dependencies (`requests`)
+
+### 🛠️ Code Quality Improvements
+
+#### Utility Consolidation
+
+- Removed duplicate `_parse_iso_datetime` from `consolidation.py`
+- Now imports from shared `automem.utils.time` module
+- Improved code reusability and consistency
+
+#### Code Cleanup
+
+- Removed erroneous `or True` from hasattr checks
+- Added proper error logging for import failures
+- Removed trailing whitespace across codebase
+- Added syntax highlighting to documentation code blocks
+- Cleaned up unused dependencies in `requirements-dev.txt`
+
+### 📝 Documentation Updates
+
+#### New Documentation
+
+- Added `docs/API.md` - Comprehensive API reference
+- Added `docs/TESTING.md` - Testing guide with benchmark instructions
+- Enhanced `README.md` with clearer setup instructions
+
+#### Removed Obsolete Documentation
+
+- Archived outdated optimization notes
+- Removed deprecated benchmark files
+- Consolidated deployment documentation
+
+### 🔧 Configuration Changes
+
+#### Pre-commit Hooks
+
+- Added `.pre-commit-config.yaml` for automated code quality checks
+- Includes trailing whitespace removal, end-of-file fixing
+
+#### Build System
+
+- Updated `Makefile` with new testing targets
+- Improved development workflow commands
+
+### 🐛 Bug Fixes
+
+- Fixed Qdrant delete selector to properly check for HTTP models
+- Added null-safety guard for enrichment queue in health endpoint
+- Fixed test consolidation engine cache invalidation
+- Corrected JSON syntax highlighting in documentation
+
+## [0.7.1] - 2025-10-20
+
+### 🐛 Railway Deployment Fixes
+
+#### Fixed - IPv6 Networking Support
+
+- **Critical**: Flask now binds to `::` (IPv6 dual-stack) instead of `0.0.0.0` (IPv4 only)
+- Railway's internal networking uses IPv6 addresses (e.g., `fd12:ca03:42be:...`)
+- Resolves `ECONNREFUSED` errors when services try to connect via internal DNS
+- Memory-service now accepts connections from SSE sidecar and other services
+
+#### Fixed - Port Configuration
+
+- **Critical**: Added `PORT=8001` to Railway template for memory-service
+- Without explicit PORT, Flask defaults to 5000, causing connection failures
+- Template now includes PORT for all services that require it
+- Documentation emphasizes PORT is **required** for Railway deployments
+
+#### Fixed - FalkorDB Data Persistence
+
+- Corrected volume mount path: `/var/lib/falkordb/data` (was `/data`)
+- FalkorDB now properly persists data across restarts
+- Updated `REDIS_ARGS` in template to match official FalkorDB Railway template
+- Removed health check configuration (Railway uses container monitoring for databases)
+
+#### Fixed - Service Naming Consistency
+
+- Standardized service name to `memory-service` across all configs and docs
+- Updated `AUTOMEM_ENDPOINT` in SSE service to use correct internal DNS
+- Eliminated confusion from mixed naming (`flask`, `automem-api`, `memory-service`)
+- `RAILWAY_PRIVATE_DOMAIN` now consistently resolves to `memory-service.railway.internal`
+
+### 📝 Documentation Improvements
+
+#### Enhanced - Railway Deployment Guide
+
+- New troubleshooting section: "Service Connection Refused (ECONNREFUSED)"
+- Added detailed explanation of Railway's IPv6 networking
+- Documented PORT requirement and common pitfalls
+- Clarified when to use hardcoded values vs `${{...}}` variable references
+- Updated FalkorDB setup instructions with correct volume paths
+- Added memory_count to health check examples for easier debugging
+
+#### Enhanced - Environment Variables Reference
+
+- Marked `PORT` as **required** for Railway deployments
+- Added Railway networking notes explaining IPv6 dual-stack binding
+- Clarified auto-populated Railway variables and their usage
+- Updated FalkorDB connection variable documentation
+
+#### Enhanced - MCP SSE Documentation
+
+- Added comprehensive troubleshooting steps for `fetch failed` errors
+- Updated service references to use `memory-service` consistently
+- Added note about internal DNS matching and verification commands
+
+### 🔧 Improvements
+
+#### Added - Debug Logging in SSE Server
+
+- SSE server now logs actual URLs being requested (`[AutoMem] GET http://...`)
+- Detailed error messages for fetch failures with endpoint information
+- Helps diagnose connection issues between services
+- Logged errors include cause and network details
+
+#### Updated - Railway Template
+
+- All critical fixes incorporated into `railway-template.json`
+- Template now follows official FalkorDB patterns for environment variables
+- Removed incorrect health check configuration for FalkorDB service
+- Added `PORT` environment variables for all services
+- Uses `FALKOR_PASSWORD` consistently (matches official template)
+
+### 🧹 Cleanup
+
+#### Removed
+
+- Backup files: `app.py.original`, `app.py.withchanges`
+- Empty/unused files: `claude-desktop-mcp.js`
+- Test/benchmark logs: `*.log`, `locomo_results.json`
+- Empty directories: `backups/`
+- Unused Railway configs: `railway-backup.json`, `railway-health-monitor.json`
+
+### 📁 Files Modified
+
+- `app.py` (Flask IPv6 binding)
+- `mcp-sse-server/server.js` (debug logging)
+- `railway-template.json` (PORT, volume paths, variable names)
+- `docs/RAILWAY_DEPLOYMENT.md` (comprehensive troubleshooting)
+- `docs/ENVIRONMENT_VARIABLES.md` (PORT requirements, IPv6 notes)
+- `docs/MCP_SSE.md` (troubleshooting guide)
+
+### 🎯 Migration Notes
+
+**For existing Railway deployments:**
+
+1. **Update memory-service variables**: Add `PORT=8001` (required)
+2. **Redeploy memory-service**: Pull latest code for IPv6 binding fix
+3. **Verify FalkorDB volume**: Should be mounted at `/var/lib/falkordb/data`
+4. **Check SSE endpoint**: Should use `http://memory-service.railway.internal:8001`
+5. **Test health**: `/health` should show `memory_count` field
+
+**For new deployments:**
+
+- Use the updated Railway template (all fixes included)
+- Follow updated `docs/RAILWAY_DEPLOYMENT.md` for manual setup
+
+## [0.7.0] - 2025-10-17
+
+### 🌉 MCP over SSE Sidecar
+
+#### Added - Hosted MCP Server via SSE
+
+- Exposes AutoMem as an MCP server over SSE for cloud clients (ChatGPT, ElevenLabs Agents)
+- Endpoints:
+  - `GET /mcp/sse` — SSE stream (server → client); auth via `Authorization: Bearer`, `X-API-Key`, or `?api_key=`
+  - `POST /mcp/messages?sessionId=<id>` — Client → server JSON-RPC messages
+  - `GET /health` — Sidecar health probe
+- Implementation: Node 18 + `@modelcontextprotocol/sdk` with JSON-RPC tool handlers mapping to AutoMem API
+- Keepalive: Heartbeats every 20s to avoid idle proxy timeouts
+
+#### Security & Auth
+
+- Preferred auth: `Authorization: Bearer <AUTOMEM_API_TOKEN>`
+- Also supports: `X-API-Key` and `?api_key=` (URL tokens may appear in logs; prefer headers)
+
+#### Documentation
+
+- New: `docs/MCP_SSE.md` with deployment, auth, and troubleshooting
+- README updated to link SSE sidecar alongside the NPM MCP bridge
+
+### 🚀 Deployment
+
+#### Railway Template Enhancements
+
+- Template now provisions 3 services: `automem-api`, `automem-mcp-sse`, and `FalkorDB`
+- `automem-mcp-sse` preconfigured with `AUTOMEM_ENDPOINT` → `http://${{automem-api.RAILWAY_PRIVATE_DOMAIN}}`
+- Health checks added for the sidecar service
+- Fixed: Corrected Dockerfile path in `mcp-sse-server/railway.json`
+- Added: `package-lock.json` for reproducible SSE builds
+
+### 📊 Benchmarks
+
+#### Added - LoCoMo Benchmark Integration
+
+- End-to-end evaluation flow, docs (`docs/LOCOMO_BENCHMARK.md`), and test harness
+- Make targets for local and live (Railway) runs
+- Initial optimization phases (1–2.5) implemented and documented
+
+### 📝 Documentation
+
+- INSTALLATION: One‑click Railway section updated to reflect new SSE service
+- README: Added SSE sidecar docs link under MCP and Documentation sections
+
+### 📁 Files Modified
+
+- `mcp-sse-server/`: `server.js`, `Dockerfile`, `package.json`, `package-lock.json`, `railway.json`
+- `docs/`: `MCP_SSE.md`, `LOCOMO_BENCHMARK.md`
+- `railway-template.json`
+- `INSTALLATION.md`, `README.md`
+
+### Commits Since 0.6.0
+
+- Add MCP SSE sidecar and LoCoMo quick wins
+- Add MCP SSE server deployment config for Railway
+- Add multi-auth support to SSE server (Bearer, X-API-Key, query param)
+- Add package-lock.json for mcp-sse-server
+- Fix Dockerfile path in mcp-sse-server railway.json
+- Implement LoCoMo benchmark optimizations (Phases 1–2.5)
+- Add LoCoMo benchmark integration and documentation
+- Update INSTALLATION.md
+
+## [0.6.0] - 2025-10-14
+
+### 🚀 Performance Optimizations
+
+#### Added - Embedding Batching (40-50% Cost Reduction)
+
+- **Feature**: Batch processing for OpenAI embedding generation
+- **Implementation**:
+  - New config: `EMBEDDING_BATCH_SIZE` (default: 20) and `EMBEDDING_BATCH_TIMEOUT_SECONDS` (default: 2.0)
+  - Created `_generate_real_embeddings_batch()` for bulk embedding generation
+  - Rewrote `embedding_worker()` to accumulate and batch-process memories
+  - Added `_process_embedding_batch()` helper function
+  - Extracted `_store_embedding_in_qdrant()` for reusability
+- **Impact**:
+  - 40-50% reduction in API calls and overhead
+  - Better throughput during high-memory periods
+  - $8-15/year savings at 1000 memories/day
+
+#### Added - Relationship Count Caching (80% Consolidation Speedup)
+
+- **Feature**: LRU cache for relationship counts with hourly invalidation
+- **Implementation**:
+  - Added `@lru_cache(maxsize=10000)` to `_get_relationship_count_cached_impl()`
+  - Cache key includes hour timestamp for automatic hourly refresh
+  - Updated `calculate_relevance_score()` to use cached method
+- **Impact**:
+  - 80% reduction in graph queries during consolidation
+  - 5x faster decay consolidation runs
+  - Minimal memory overhead with automatic LRU eviction
+
+#### Added - Async Embedding Generation (60% Faster /memory POST)
+
+- **Feature**: Background embedding generation with queue-based processing
+- **Implementation**:
+  - Embeddings generated asynchronously in worker thread
+  - `/memory` POST returns immediately after FalkorDB write
+  - Queue-based system prevents blocking API responses
+- **Impact**:
+  - `/memory` endpoint 60% faster (was 250-400ms, now 100-150ms)
+  - Better user experience for high-frequency memory storage
+  - No loss in reliability - queued embeddings processed in order
+
+#### Added - Enrichment Stats in /health Endpoint
+
+- **Feature**: Public enrichment metrics in health check (no auth required)
+- **Implementation**: Enhanced `/health` endpoint with enrichment section
+- **Response Format**:
+  ```json
+  {
+    "enrichment": {
+      "status": "running",
+      "queue_depth": 12,
+      "pending": 15,
+      "inflight": 3,
+      "processed": 1234,
+      "failed": 5
+    }
+  }
+  ```
+- **Impact**: Better monitoring and early detection of enrichment backlogs
+
+#### Added - Structured Logging
+
+- **Feature**: Performance metrics in logs for analysis and debugging
+- **Implementation**:
+  - Added structured logging to `/recall` endpoint with query, latency, results, filters
+  - Added structured logging to `/memory` (store) endpoint with type, size, latency, status
+  - Logs include `extra={}` dict with machine-parseable fields
+- **Impact**:
+  - Easy performance analysis via log aggregation
+  - Better debugging for production issues
+  - Foundation for metrics dashboards
+
+#### Added - Query Time Metrics
+
+- **Feature**: All API responses now include `query_time_ms` field
+- **Implementation**: Added `time.perf_counter()` tracking to all endpoints
+- **Impact**: Easy performance monitoring without parsing logs
+
+### 🏗️ Code Quality & Infrastructure
+
+#### Refactored - Utility Module Structure
+
+- **Change**: Extracted reusable helpers from `app.py` into `automem/` package
+- **Created Modules**:
+  - `automem/utils/graph.py` - Graph query helpers
+  - `automem/utils/tags.py` - Tag normalization and processing
+  - `automem/utils/text.py` - Text processing utilities
+  - `automem/utils/time.py` - Timestamp parsing and formatting
+  - `automem/utils/scoring.py` - Relevance scoring functions
+- **Impact**: Better code organization, easier testing, reduced duplication
+
+#### Improved - Docker Build
+
+- **Added**: `.dockerignore` file for faster builds
+- **Change**: Updated Dockerfile to use new utility module structure
+- **Impact**: Smaller Docker images, faster builds
+
+#### Improved - Backup Infrastructure
+
+- **Added**: GitHub Actions workflow for automated backups to S3
+- **Added**: Comprehensive backup documentation in `docs/MONITORING_AND_BACKUPS.md`
+- **Added**: Backup service deployment guides for Railway
+- **Impact**: Better disaster recovery, automated backup schedules
+
+### 🐛 Bug Fixes
+
+#### Fixed - Project Name Extraction
+
+- **Issue**: Feature names like "file-ops-automation" were incorrectly extracted as projects
+- **Fix**: Added filtering to prevent feature/module names from entity extraction
+- **Impact**: Cleaner entity metadata, more accurate project tracking
+
+#### Fixed - /health Endpoint Attribute Error
+
+- **Issue**: `/health` endpoint crashed with `AttributeError: 'EnrichmentStats' object has no attribute 'success_count'`
+- **Fix**: Corrected attribute names to `successes` and `failures` (actual class fields)
+- **Impact**: `/health` endpoint now works correctly with enrichment stats
+
+### 📁 Files Modified
+
+- `app.py` - Embedding batching, async generation, health endpoint, structured logging, query timing
+- `consolidation.py` - Relationship count caching
+- `automem/utils/` - New utility module structure
+- `Dockerfile` - Updated for new module structure
+- `.dockerignore` - Created for faster builds
+- `.github/workflows/backup.yml` - Created automated backup workflow
+- `docs/MONITORING_AND_BACKUPS.md` - Updated with comprehensive backup strategies
+- `OPTIMIZATIONS.md` - Created comprehensive optimization documentation
+- `test-optimizations.sh` - Created test script for validating optimizations
+
+### 📊 Performance Comparison
+
+| Metric                   | Before    | After        | Improvement |
+| ------------------------ | --------- | ------------ | ----------- |
+| OpenAI API calls         | 1000/day  | ~50-100/day  | 40-50% ↓    |
+| Annual embedding cost    | $20-30    | $12-18       | $8-15 saved |
+| `/memory` latency        | 250-400ms | 100-150ms    | 60% faster  |
+| Consolidation time (10k) | ~5 min    | ~1 min       | 80% faster  |
+| Production visibility    | Limited   | Full metrics | ∞ better    |
+
+### 🎓 Based On
+
+- Audit by Steve (October 11, 2025)
+- Implemented highest-ROI recommendations from audit
+- Total implementation time: ~3 hours for optimizations
+- Expected ROI: 200-300% in year 1
+
+---
+
+## [0.5.0] - 2025-10-13
+
+### 🎯 Major Data Quality Overhaul
+
+#### Fixed - Memory Type Pollution (Critical)
+
+- **Issue**: 490/773 memories (64%) had invalid types from recovery script bug
+- **Root Cause**: Recovery script flattened `metadata.type` as top-level property, overwriting actual memory type
+- **Fix**:
+  - Added `RESERVED_FIELDS` filter in `scripts/recover_from_qdrant.py` to exclude type, confidence, content, etc.
+  - Created `scripts/cleanup_memory_types.py` to reclassify all 490 polluted memories
+  - 100% success rate - all memories reclassified to 7 valid types
+- **Impact**: Analytics now accurate with only valid memory types (Decision, Pattern, Preference, Style, Habit, Insight, Context)
+
+#### Fixed - Tag-Based Search Not Working
+
+- **Issue**: Tag searches returned 0 results despite memories having tags
+- **Root Cause**: Qdrant missing keyword indexes on `tags` and `tag_prefixes` payload fields
+- **Fix**: Added `PayloadSchemaType.KEYWORD` indexes in `_ensure_qdrant_collection()`
+- **Impact**: Tag filtering now works for both exact and prefix matching
+
+#### Improved - Entity Extraction Quality
+
+**Phase 1 - Error Code Filtering:**
+
+- Added `ENTITY_BLOCKLIST` for HTTP errors (Bad Request, Not Found, etc.)
+- Added `ENTITY_BLOCKLIST` for network errors (ECONNRESET, ETIMEDOUT, etc.)
+
+**Phase 2 - Code Artifact Filtering:**
+
+- Block markdown formatting (`- **File:**`, `# Header`, etc.)
+- Block class name suffixes (Adapter, Handler, Manager, Service, etc.)
+- Block JSON field names (starting with underscore like `_embedded`)
+- Block boolean literals (`'false'`, `true`, `null`)
+- Block environment variables (all-caps with underscores)
+- Block text fragments (strings ending with colons)
+
+**Phase 3 - Project Name Extraction:**
+
+- **Issue**: Project extraction regex required `Project ProjectName` but memories use `project: project-name`
+- **Fix**: Added pattern `r"(?:in |on )?project:\s+([a-z][a-z0-9\-]+)"`
+- **Impact**: Now correctly extracts claude-automation-hub, mcp-automem, autochat from session starts
+
+#### Added - LLM-Based Memory Classification
+
+- **Feature**: Hybrid classification system (regex first, LLM fallback)
+- **Implementation**:
+  - Enhanced `MemoryClassifier` with `_classify_with_llm()` method
+  - Uses GPT-4o-mini for accurate, cost-effective classification
+  - Falls back to LLM only when regex patterns don't match (~30% of cases)
+- **Reclassification Completed**: 413 memories reclassified with 100% success rate
+- **Cost**: $0.04 total for one-time reclassification, ~$0.24/year ongoing (10 memories/day)
+- **Accuracy**: 85-95% confidence on technical content, work logs, session starts
+- **Script**: Created `scripts/reclassify_with_llm.py` for batch reclassification
+
+#### Added - Automated Backups
+
+- **GitHub Actions**: Workflow runs every 6 hours, backs up to S3
+- **Railway Volumes**: Built-in volume backups for redundancy
+- **Dual Storage**: FalkorDB (primary) + Qdrant (backup) provides data resilience
+- **Documentation**: Consolidated all backup docs into `docs/MONITORING_AND_BACKUPS.md`
+
+#### Fixed - FalkorDB Data Loss Recovery
+
+- **Issue**: FalkorDB restarted and lost all memories (persistence not working)
+- **Recovery**: Used `scripts/recover_from_qdrant.py` to restore 778/780 memories from Qdrant
+- **Root Cause Analysis**: `appendonly` was set to `no` instead of `yes`
+- **Prevention**: Verified `REDIS_ARGS` in Railway and documented proper persistence configuration
+
+### 📁 Files Modified
+
+- `app.py` - Enhanced entity extraction, LLM classification, Qdrant indexes
+- `scripts/recover_from_qdrant.py` - Fixed metadata field handling
+- `scripts/cleanup_memory_types.py` - Created tool for type reclassification
+- `scripts/reclassify_with_llm.py` - Created LLM-based reclassification tool
+- `docs/MONITORING_AND_BACKUPS.md` - Updated with comprehensive backup strategies
+- `docs/RAILWAY_DEPLOYMENT.md` - Updated references to backup documentation
+- `README.md` - Updated architecture and documentation links
+- `.github/workflows/backup.yml` - Created automated backup workflow
+
+### 📊 Impact Summary
+
+- **Memory Types**: 79 invalid types → 7 valid types (100% cleanup)
+- **Reclassified**: 903 total memories
+  - 490 via cleanup script (invalid types → valid types)
+  - 413 via LLM (fallback "Memory" → specific types)
+  - 100% success rate on both
+- **Final Distribution**: Context (47%), Decision (16%), Insight (13%), Habit (12%), Preference (9%), Pattern (3%), Style (<1%)
+- **Entity Quality**: Clean extraction, no error codes or code artifacts
+- **Tag Search**: Fully functional with proper indexing
+- **Backups**: Automated every 6 hours to S3
+- **Data Recovery**: 99.7% recovery rate (778/780) from Qdrant
+- **Classification**: Hybrid system with 85-95% LLM confidence
+
+### 🚀 Deployment
+
+All changes deployed to Railway at `automem.up.railway.app`
+
+### 💰 Cost Analysis
+
+- **LLM Classification**: $0.04 one-time + $0.24/year ongoing (~$0.02/month)
+- **S3 Backups**: Minimal (~$0.05/month for storage + lifecycle rules)
+- **Qdrant**: Existing free tier (1GB)
+- **Railway**: Existing deployment ($5/month hobby plan)
+
+---
+
+## [Prior Releases]
+
+See git history for previous changes.

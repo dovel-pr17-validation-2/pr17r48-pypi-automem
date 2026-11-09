@@ -1,0 +1,59 @@
+name: MCP Transport Parity Audit
+
+# Diffs the remote MCP bridge against the stdio package against one live
+# AutoMem. See docs/MCP_TRANSPORT_PARITY.md for the contract.
+#
+# Manual migration audit: known gaps in the other five tools keep the full
+# comparison red. Required per-PR contract coverage stays in CI's node-test
+# job, including the deterministic recall parity tests. Restore automatic
+# runs only once the full comparison has a useful passing baseline.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: mcp-sse-server/package-lock.json
+
+      - name: Start AutoMem stack
+        env:
+          AUTOMEM_API_HOST_PORT: '8011'
+          AUTOMEM_API_TOKEN: test-token
+          ADMIN_API_TOKEN: test-admin-token
+        run: docker compose up -d
+
+      - name: Wait for /health
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:8011/health > /dev/null; then
+              echo "AutoMem is up after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "AutoMem did not become healthy within 60s"
+          docker compose logs flask-api
+          exit 1
+
+      - name: Run parity harness
+        working-directory: mcp-sse-server
+        env:
+          AUTOMEM_RUN_PARITY_TESTS: '1'
+          AUTOMEM_PARITY_API_URL: http://localhost:8011
+          AUTOMEM_PARITY_API_TOKEN: test-token
+        run: |
+          npm ci
+          node -p "'stdio package under test: ' + require('@verygoodplugins/mcp-automem/package.json').version"
+          npm test
+
+      - name: Dump service logs on failure
+        if: failure()
+        run: docker compose logs --tail=200

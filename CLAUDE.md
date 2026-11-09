@@ -1,0 +1,378 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+AutoMem is a Flask-based memory service that provides durable memory storage for AI assistants using FalkorDB (graph database) for relationships and Qdrant (vector database) for semantic search. The service gracefully degrades when Qdrant is unavailable, ensuring graph operations always succeed.
+
+## Development Commands
+
+```bash
+# Setup environment
+make install          # Create .venv, install deps, and keep venv -> .venv
+source .venv/bin/activate
+
+# Development
+make dev             # Start full stack (FalkorDB + Qdrant + API) via Docker
+make stop            # Stop local containers (keep volumes)
+make test            # Run pytest test suite (unit tests only)
+make test-integration # Run all tests including integration tests (starts Docker)
+make test-live       # Run integration tests against live Railway server
+make logs            # Follow Flask API logs
+make clean           # Clean up Docker containers/volumes
+
+# Benchmarking
+make test-locomo      # Run LoCoMo benchmark against local server
+make test-locomo-live # Run LoCoMo benchmark against Railway server
+
+# Recall Quality Lab (data-driven scoring tests)
+make lab-clone        # Clone production data to local Docker
+make lab-queries      # Generate test queries from local data
+make lab-test CONFIG=baseline    # Run recall test with a config
+make lab-compare CONFIG=fix_v1 BASELINE=baseline  # A/B compare configs
+make lab-sweep PARAM=SEARCH_WEIGHT_VECTOR VALUES=0.20,0.30,0.40,0.50
+
+# Code quality
+black .              # Format Python code
+flake8               # Lint Python code
+
+# Testing specific features
+pytest                               # Run all tests
+pytest tests/test_app.py -v         # Run with verbose output
+pytest -k test_store_memory          # Run specific test by name
+pytest tests/test_consolidation_engine.py::TestMemoryConsolidator  # Run test class
+
+# Deployment
+make deploy          # Deploy to Railway
+make status          # Check deployment status
+```
+
+## API Endpoints
+
+The `automem/api` module registers all HTTP routes as Flask blueprints—there are **no routes in `app.py`** (it only wires the app together via `register_blueprints`). It exposes ~31 distinct paths across these blueprint modules: memory, recall, graph, entity, admin, backup, enrichment, consolidation, stream, viewer, and health.
+
+### Core Memory Operations
+- `POST /memory` - Store a memory with content, tags, importance, metadata, and optional embedding
+- `GET /recall` - Recall memories via text search, vector similarity, time range, and tags
+- `PATCH /memory/<id>` - Update existing memory (content, tags, importance, metadata)
+- `DELETE /memory/<id>` - Remove memory from both graph and vector stores
+- `GET /memory/by-tag` - Filter memories by tags with importance/recency scoring
+
+### Relationship Management
+- `POST /associate` - Create relationships between memories (11 types available)
+
+### Consolidation & Analysis
+- `POST /consolidate` - Trigger memory consolidation tasks (decay, creative, cluster, forget, full)
+- `GET /consolidate/status` - Check consolidation scheduler status and last run times
+- `GET /startup-recall` - Retrieve memories for startup context
+- `GET /analyze` - Analyze graph statistics and memory patterns
+
+### Enrichment
+- `GET /enrichment/status` - Inspect queue depth, worker state, and throughput metrics
+- `POST /enrichment/reprocess` - Force reprocessing of specific memories (requires `X-Admin-Token`)
+
+### Health
+- `GET /health` - Service health check with database connectivity status
+
+## Architecture
+
+### Data Flow
+1. **Flask API** (port 8001) - Request validation, orchestration, authentication
+2. **FalkorDB** (port 6379) - Graph storage for Memory nodes and relationship edges
+3. **Qdrant** (optional, port 6333) - Vector search for semantic similarity (dimension depends on embedding provider; see `VECTOR_SIZE`)
+4. **Consolidation Engine** - Background processing for memory maintenance
+5. **FalkorDB Browser** (local, port 3000) - FalkorDB built-in Web UI for local graph inspection
+
+### Memory Consolidation Engine
+
+The `consolidation.py` module implements biological memory patterns:
+- **Decay** - Daily exponential relevance updates (`CONSOLIDATION_DECAY_INTERVAL_SECONDS=86400`; fractional-day math keeps shorter intervals meaningful)
+- **Creative** - Discovers hidden associations during "REM-like" processing (weekly, `604800s`)
+- **Clustering** - Semantic grouping to compress related memories (monthly, `2592000s`)
+- **Forgetting** - Archives low-importance memories (**disabled by default**; `CONSOLIDATION_FORGET_INTERVAL_SECONDS=0`)
+
+Scheduling is managed by `ConsolidationScheduler` with configurable intervals via environment variables.
+
+### Enrichment Pipeline
+
+- Queue-backed worker consumes `EnrichmentJob`s created on each memory write and optional reprocess calls.
+- Extracts entities (tools/projects/people/organisations/concepts) using spaCy when available, otherwise regex heuristics, and writes them to metadata plus entity tags (`entity:<type>:<slug>`).
+- Adds short summaries, timestamps (`enriched_at`), and per-run metrics under `metadata.enrichment`.
+- Establishes temporal (`PRECEDED_BY`) and semantic (`SIMILAR_TO`) edges, including symmetric cosine scores from Qdrant.
+- Detects recurring patterns per memory type, strengthens shared `Pattern` nodes, and links memories via `EXEMPLIFIES` relationships with key terms.
+- Metrics exposed at `GET /enrichment/status` include processed counts, last success/error, queue depth, and inflight jobs.
+
+### Relationship Types
+
+AutoMem supports 11 relationship types with optional properties:
+```python
+# Original core relationships
+RELATES_TO         # General relationship
+LEADS_TO           # Causal relationship
+OCCURRED_BEFORE    # Temporal relationship
+
+# Enhanced PKG relationships
+PREFERS_OVER       # Preference relationship (context, strength, reason)
+EXEMPLIFIES        # Pattern example (pattern_type, confidence)
+CONTRADICTS        # Conflicting information (resolution, reason)
+REINFORCES         # Strengthens pattern (strength, observations)
+INVALIDATED_BY     # Superseded information (reason, timestamp)
+EVOLVED_INTO       # Evolution of knowledge (confidence, reason)
+DERIVED_FROM       # Derived knowledge (transformation, confidence)
+PART_OF            # Hierarchical relationship (role, context)
+```
+
+### Memory Type Classification
+
+Memories are classified into types for better organization:
+- `Decision` - Strategic choices and rationales
+- `Pattern` - Recurring behaviors and approaches
+- `Preference` - User preferences and settings
+- `Style` - Coding/writing style patterns
+- `Habit` - Regular practices and workflows
+- `Insight` - Learned insights and discoveries
+- `Context` - Environmental and project context
+- `Memory` - Default base type
+
+### Embedding Generation
+
+AutoMem uses a provider pattern with multiple embedding backends:
+
+#### Provider Priority (Auto-Selection)
+
+1. **Voyage AI** (`voyage:voyage-4`) - If `VOYAGE_API_KEY` is set
+   - Recommended provider for new deployments: multilingual quality with a generous free tier; see [Voyage pricing](https://docs.voyageai.com/docs/pricing) for current limits and rates
+   - High-quality embeddings with flexible model family (voyage-4, voyage-4-large, voyage-4-lite)
+   - Supports output dimensions: 256, 512, 1024, 2048
+   - Requires network and API key
+
+2. **OpenAI / OpenAI-compatible** (`openai:text-embedding-3-small`) - If `OPENAI_API_KEY` is set
+   - API fallback when Voyage is not configured
+   - Semantic embeddings via API, truncated to `VECTOR_SIZE` via Matryoshka (OpenAI native only)
+   - If `VECTOR_SIZE` > 1536, auto-upgrades to `text-embedding-3-large` (set `EMBEDDING_MODEL=text-embedding-3-large` to silence)
+   - Supports any OpenAI-compatible endpoint via `OPENAI_BASE_URL` (OpenRouter, LiteLLM, vLLM, Azure, etc.) for both embeddings and classification/enrichment LLM calls
+   - The `dimensions` parameter is only sent to OpenAI's own API; omitted for third-party providers
+
+3. **Ollama** (`ollama:nomic-embed-text`) - If `OLLAMA_BASE_URL` or `OLLAMA_MODEL` is configured
+   - Fully local, easy model swapping
+   - Requires running Ollama server
+   - Use `ollama pull bge-m3`, then `OLLAMA_MODEL=bge-m3` with `VECTOR_SIZE=1024` for local/self-hosted multilingual BGE-M3
+
+4. **FastEmbed** (`fastembed:BAAI/bge-base-en-v1.5`) - Local ONNX model
+   - Good quality semantic embeddings
+   - No API key or internet required (after first download)
+   - Downloads ~210MB model to `~/.config/automem/models/` on first use
+   - 768 dimensions (default), also supports 384 and 1024 dim models
+   - Local/self-hosted only: its 1024d cloud fallback can consume roughly 4 GB RSS and raise hosting cost substantially
+
+5. **Placeholder** (`placeholder`) - Hash-based fallback
+   - Deterministic vectors from content hash
+   - No semantic meaning, last resort only
+
+**Upgrade safety:** `VECTOR_SIZE_AUTODETECT=true` (default) only adopts an existing collection dimension. It does not make vectors from different models compatible: any provider or model change requires recreating the Qdrant collection and a full re-embed, including a swap between two 1024d models. To enforce strict dimension matching, set `VECTOR_SIZE_AUTODETECT=false`.
+
+#### Provider Configuration
+
+Control via `EMBEDDING_PROVIDER` environment variable:
+- `auto` (default): Try Voyage → OpenAI → Ollama (only when configured) → FastEmbed → Placeholder
+- `voyage`: Use Voyage only (fail if unavailable)
+- `openai`: Use OpenAI only (fail if unavailable). Also works with OpenAI-compatible providers when `OPENAI_BASE_URL` is set.
+- `ollama`: Use Ollama only (fail if unavailable)
+- `local`: Use FastEmbed only (fail if unavailable)
+- `placeholder`: Use placeholder embeddings
+
+Graph writes always succeed even if vector storage fails (graceful degradation).
+
+**Module:** `automem/embedding/` provides `EmbeddingProvider` abstraction with implementations: `VoyageEmbeddingProvider`, `OpenAIEmbeddingProvider` (also handles compatible providers), `OllamaEmbeddingProvider`, `FastEmbedProvider`, `PlaceholderEmbeddingProvider`.
+
+## Testing
+
+Tests use pytest with a `DummyGraph` fixture to mock FalkorDB operations:
+
+```bash
+# Set environment variable to disable conflicting plugins
+export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+
+# Run tests
+pytest                                      # All unit tests
+pytest tests/test_app.py::test_recall -v   # Single test with verbose
+pytest -k "consolidat"                     # Tests matching pattern
+pytest --tb=short                          # Shorter traceback format
+
+# Integration tests (requires Docker services)
+make test-integration                       # Starts services and runs integration tests
+AUTOMEM_RUN_INTEGRATION_TESTS=1 pytest tests/test_integration.py -v
+
+# Live server testing (requires Railway deployment)
+./test-live-server.sh                       # Tests against deployed Railway instance
+make test-live                              # Same as above via Makefile
+```
+
+Test files:
+- `tests/test_app.py` - Core API endpoint tests
+- `tests/test_consolidation_engine.py` - Memory consolidation logic tests
+- `tests/test_enrichment.py` - Entity extraction and enrichment tests
+- `tests/test_integration.py` - Full stack integration tests (requires Docker)
+- `tests/test_api_endpoints.py` - Comprehensive API endpoint tests
+- `tests/benchmarks/locomo/` - LoCoMo benchmark suite for long-term memory evaluation
+
+## Environment Configuration
+
+Key variables (create `.env` or `~/.config/automem/.env`):
+```bash
+# Core services
+FALKORDB_HOST=localhost       # Graph database host
+FALKORDB_PORT=6379           # Graph database port
+FALKORDB_GRAPH=memories      # Graph name
+QDRANT_URL=                  # Vector database URL — Qdrant Cloud (optional)
+QDRANT_HOST=                 # OR hostname for self-hosted Qdrant (e.g. "qdrant" on Railway)
+QDRANT_PORT=6333             # Port for self-hosted Qdrant (used with QDRANT_HOST)
+QDRANT_API_KEY=              # Qdrant Cloud API key (optional, not needed for self-hosted)
+QDRANT_COLLECTION=memories   # Collection name
+VECTOR_SIZE=1024             # Embedding dimensions (1024 for voyage-4 or Ollama bge-m3, 768 for small, 3072 for large)
+VECTOR_SIZE_AUTODETECT=true  # Adopt existing collection dim on startup (false = fail on mismatch)
+
+# API configuration
+PORT=8001                    # API port
+AUTOMEM_API_TOKEN=           # Required for authentication
+ADMIN_API_TOKEN=             # For admin endpoints
+
+# Embedding configuration
+EMBEDDING_PROVIDER=auto      # auto|voyage|openai|ollama|local|placeholder
+VOYAGE_API_KEY=              # Recommended for new cloud deployments
+VOYAGE_MODEL=voyage-4
+OPENAI_API_KEY=              # For OpenAI or compatible provider (optional)
+OPENAI_BASE_URL=             # Custom endpoint for OpenAI-compatible APIs used by embeddings and classification/enrichment (optional)
+OLLAMA_BASE_URL=             # Intentional local/self-hosted Ollama endpoint
+OLLAMA_MODEL=                # e.g. bge-m3 (requires `ollama pull bge-m3`)
+
+# Consolidation intervals (seconds)
+CONSOLIDATION_DECAY_INTERVAL_SECONDS=86400    # 1 day (default)
+CONSOLIDATION_DECAY_IMPORTANCE_THRESHOLD=0.3  # Only skip truly low-importance items
+CONSOLIDATION_BASE_DECAY_RATE=0.01            # Daily decay rate (0.01 ≈ 69-day half-life)
+CONSOLIDATION_IMPORTANCE_FLOOR_FACTOR=0.3     # Min relevance = importance * this (floor)
+CONSOLIDATION_CREATIVE_INTERVAL_SECONDS=604800  # 1 week (default)
+CONSOLIDATION_CLUSTER_INTERVAL_SECONDS=2592000  # 1 month (default)
+CONSOLIDATION_FORGET_INTERVAL_SECONDS=0       # Disabled by default (set to enable)
+
+# Enrichment controls
+ENRICHMENT_MAX_ATTEMPTS=3                     # Retry attempts before giving up
+ENRICHMENT_SIMILARITY_LIMIT=5                 # Neighbour links via Qdrant
+ENRICHMENT_SIMILARITY_THRESHOLD=0.8           # Minimum cosine to link memories
+ENRICHMENT_IDLE_SLEEP_SECONDS=2               # Worker sleep when idle
+ENRICHMENT_FAILURE_BACKOFF_SECONDS=5          # Backoff between retries
+ENRICHMENT_ENABLE_SUMMARIES=true              # Toggle automatic summary creation
+ENRICHMENT_SPACY_MODEL=en_core_web_sm         # spaCy model for entity extraction
+
+# JIT enrichment (lightweight inline enrichment during recall)
+JIT_ENRICHMENT_ENABLED=true                   # Run entity/summary extraction inline on recall for unenriched memories
+
+# Search scoring weights (all floats, see docs/ENVIRONMENT_VARIABLES.md)
+SEARCH_WEIGHT_VECTOR=0.35          # Semantic similarity via Qdrant
+SEARCH_WEIGHT_KEYWORD=0.35         # Keyword/TF-IDF matching
+SEARCH_WEIGHT_METADATA=0.35        # Metadata sidecar match score
+SEARCH_WEIGHT_RELATION=0.25        # Graph relationship boost
+SEARCH_WEIGHT_TAG=0.20             # Tag overlap scoring
+SEARCH_WEIGHT_EXACT=0.20           # Exact phrase in metadata
+SEARCH_WEIGHT_IMPORTANCE=0.10      # Memory importance score
+SEARCH_WEIGHT_RECENCY=0.10         # Decay per SEARCH_RECENCY_* (default: linear over 180 days)
+SEARCH_WEIGHT_CONFIDENCE=0.05      # Memory confidence score
+SEARCH_WEIGHT_RELEVANCE=0.0        # Experimental — consolidation decay relevance; 0.0 = no-op (off by default)
+SEARCH_WEIGHT_TEMPORAL=0.1         # Relative-recency bonus, only when recency_bias re-rank runs
+RECALL_RECENCY_BIAS=off            # Recency re-rank default: off|on|auto (per-request recency_bias param overrides)
+
+# Memory content limits
+MEMORY_CONTENT_SOFT_LIMIT=500      # Auto-summarization trigger (chars)
+MEMORY_CONTENT_HARD_LIMIT=2000     # Hard rejection limit (chars)
+MEMORY_AUTO_SUMMARIZE=true         # Enable/disable auto-summarization
+MEMORY_SUMMARY_TARGET_LENGTH=300   # Target summarized length (chars)
+
+# Sync configuration (background FalkorDB ↔ Qdrant consistency)
+SYNC_CHECK_INTERVAL_SECONDS=3600   # Check interval (1 hour)
+SYNC_AUTO_REPAIR=true              # Auto-fix inconsistencies
+```
+
+Install spaCy locally to improve entity extraction:
+
+```bash
+pip install spacy
+python -m spacy download en_core_web_sm
+```
+
+## Migration Tools
+
+Migrating from the legacy MCP SQLite store, upgrading to 0.16.0 (entity nodes,
+tag prefixes, relevance rescore), or changing embedding dimensions? The runbook
+is [docs/MIGRATIONS.md](docs/MIGRATIONS.md); the scripts are cataloged in
+[scripts/README.md](scripts/README.md).
+
+## Utility Scripts
+
+The `scripts/` directory holds all maintenance, migration, recovery, and
+evaluation tooling. **[scripts/README.md](scripts/README.md) is the canonical
+catalog** — every script, grouped by lifecycle (routine / one-time / recovery /
+dev / bench / lab), with usage and links to deep-dive docs. Update the catalog
+rather than re-listing scripts here.
+
+Agents most often reach for:
+- **`browse_memories.py`** — read-only FalkorDB + Qdrant browser (`search` / `inspect` / `stats` / `diagnose`); never modifies data.
+- **`backup_automem.py`** / **`restore_from_backup.py`** — snapshot and restore both stores.
+
+Deep dives: [docs/MIGRATIONS.md](docs/MIGRATIONS.md) (migrations),
+[docs/MONITORING_AND_BACKUPS.md](docs/MONITORING_AND_BACKUPS.md) (backup/recovery),
+[docs/RECALL_QUALITY_LAB.md](docs/RECALL_QUALITY_LAB.md) (the `lab/` recall-tuning harness).
+
+### Benchmark Ownership
+- Official benchmark claims, baselines, and release-gating benchmark flows stay in `automem`.
+- Exploratory eval work such as ruleset sweeps, seeded corpora, scenario authoring, and cross-agent/back-end comparisons belongs in `automem-evals`.
+- External eval repos should use the local service contract documented in `docs/EVALS_CONTRACT.md`.
+
+## Local vs Railway Workflow
+
+### Typical Development Flow
+1. **Local Development** - Make changes and test with `make dev`
+2. **Unit Tests** - Verify with `make test`
+3. **Integration Tests** - Validate with `make test-integration`
+4. **Deploy to Railway** - Push changes with `make deploy`
+5. **Live Validation** - Test deployed instance with `make test-live`
+6. **Benchmarking** - Validate performance with `make test-locomo-live`
+
+### When to Use Each Environment
+
+**Local (Docker Compose)**:
+- Feature development and debugging
+- Rapid iteration without deployment delays
+- Testing consolidation/enrichment behavior
+- Privacy-focused work (data stays local)
+- Cost-free development
+
+**Railway (Cloud)**:
+- Production deployment for 24/7 availability
+- Multi-device access (laptop, desktop, mobile)
+- Team collaboration with shared memory
+- Testing real-world latency and performance
+- Integration with remote AI tools
+
+### Testing Against Railway
+Before deploying breaking changes, test against your Railway instance:
+```bash
+# Set Railway environment variables
+export AUTOMEM_TEST_URL=https://your-app.railway.app
+export AUTOMEM_TEST_API_TOKEN=your_token
+export AUTOMEM_TEST_ADMIN_TOKEN=your_admin_token
+
+# Run integration tests against Railway
+./test-live-server.sh
+```
+
+## Key Implementation Patterns
+
+- Memory IDs are UUIDs stored in both databases for cross-referencing
+- Timestamps are normalized to UTC ISO format
+- Recall scoring combines vector similarity, keyword match, tag overlap, and recency
+- Authentication supports Bearer token, X-API-Key header, or query parameter
+- Graph operations are atomic with automatic rollback on errors
+- Vector store errors are logged but don't block graph writes
+- Consolidation runs in background threads without blocking API requests
+- Enrichment pipeline processes memories asynchronously with automatic retries
